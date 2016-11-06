@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LabRat</string>
+    <string name="googlebutton">Sign in with Google</string>
+    <string name="facebookButton">Sign in with Facebook</string>
+    <string name="twitterButton">Sign in with Twitter</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

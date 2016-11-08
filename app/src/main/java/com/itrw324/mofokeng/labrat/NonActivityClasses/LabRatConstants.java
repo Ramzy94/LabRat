@@ -16,4 +16,12 @@ public final class LabRatConstants {
          */
         public static final int ACCOUNTS_PERMISSION = 0;
     }
+
+    public static final class UserDialogs
+    {
+        public static final String USER_NOT_REGISTERED = "The user is not yet registered";
+        public static final String USER_REGISTERED = "The user is already Registered";
+        public static final String REGISTRATION_SUCCESSFUL = "Registration Successfully Completed";
+        public static final String CONTACT_PERMISSION = "LabRat Needs to be able to Access Your Google Account To Proceed";
+    }
 }

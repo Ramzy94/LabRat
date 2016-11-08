@@ -13,7 +13,7 @@ public class UserAccount   {
     private GoogleSignInAccount account;
     private int role;
     private String university_Number;
-    private Schedule schedule;
+
 
     //
     public String getUniversity_Number() {
@@ -43,11 +43,4 @@ public class UserAccount   {
         this.role = role;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
 }

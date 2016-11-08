@@ -14,6 +14,8 @@ public final class Database
     static final String SQL_CREATE_CLASS = "CREATE TABLE "+TableClass.TABLE_NAME+" ( "+TableClass.COLOUMN_CLASS_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+TableClass.COLOUMN_CLASS_PERIOD+" INTEGER NULL, "+TableClass.COLOUMN_VENUEID+" INTEGER NOT NULL, "+TableClass.COLOUMN_MODULE_CODE+" TEXT NOT NULL, FOREIGN KEY ("+TableClass.COLOUMN_VENUEID+") REFERENCES venue ("+TableVenue.COLOUMN_VENUEID+"), FOREIGN KEY ("+TableClass.COLOUMN_MODULE_CODE+") REFERENCES module ("+TableModule.COLOUMN_MODULE_CODE+") );";
     static final String SQL_CREATE_SCHEDULE = "CREATE TABLE "+TableSchedule.TABLE_NAME+" ( "+TableSchedule.COLOUMN_SCHEDULEID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+TableSchedule.COLOUMN_USER_EMAIL+" TEXT NOT NULL, "+TableSchedule.COLOUMN_CLASS_ID+" INTEGER NOT NULL, FOREIGN KEY ("+TableSchedule.COLOUMN_USER_EMAIL+") REFERENCES user ("+TableUser.COLOUMN_USER_EMAIL+"), FOREIGN KEY ("+TableSchedule.COLOUMN_CLASS_ID+") REFERENCES class ("+TableClass.COLOUMN_CLASS_ID+") );";
 
+    static final String DROP_DATABASE = "DROP TABLE schedule; DROP TABLE class; DROP TABLE venue; DROP TABLE user; DROP TABLE module;";
+
     static abstract class TableUser implements BaseColumns
     {
         static final String TABLE_NAME = "user";

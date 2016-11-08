@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 
 /**
@@ -18,31 +20,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private SQLiteDatabase database;
 
     public DatabaseHandler(Context context) {
-        super(context,DATABASE_NAME,null,DATABASE_VERSION);
-
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void insertUser(UserAccount account)
-    {
+
+    public void insertUser(UserAccount account) {
         ContentValues values = new ContentValues();
-        values.put(Database.TableUser.COLOUMN_USER_EMAIL,account.getAccount().getEmail());
-        values.put(Database.TableUser.COLOUMN_DISPLAY_NAME,account.getAccount().getDisplayName());
-        values.put(Database.TableUser.COLOUMN_UNIVERSITY_NUMBER,account.getUniversity_Number());
-        values.put(Database.TableUser.COLOUMN_ROLE,account.getRole());
+        values.put(Database.TableUser.COLOUMN_USER_EMAIL, account.getAccount().getEmail());
+        values.put(Database.TableUser.COLOUMN_DISPLAY_NAME, account.getAccount().getDisplayName());
+        values.put(Database.TableUser.COLOUMN_UNIVERSITY_NUMBER, account.getUniversity_Number());
+        values.put(Database.TableUser.COLOUMN_ROLE, account.getRole());
 
         database = this.getWritableDatabase();
 
-        database.insert(Database.TableUser.TABLE_NAME,null,values);
+        database.insert(Database.TableUser.TABLE_NAME, null, values);
     }
 
-    public Cursor selectUser(String email)
-    {
+    public boolean alreadySignedUp(String email) {
         database = this.getReadableDatabase();
 
-        String []args = {email};
+        String[] args = {email};
 
-        String sql = "SELECT * FROM "+Database.TableUser.TABLE_NAME+" WHERE "+Database.TableUser.COLOUMN_USER_EMAIL+" = ?;";
-        return database.rawQuery(sql,args);
+        String sql = "SELECT " + Database.TableUser.COLOUMN_USER_EMAIL + " FROM " + Database.TableUser.TABLE_NAME + " WHERE " + Database.TableUser.COLOUMN_USER_EMAIL + " = ?;";
+        Cursor c = database.rawQuery(sql, args);
+        c.moveToFirst();
+
+        Log.println(Log.DEBUG, "Yeah", "ABCDEFGHIJKLMNOPQRSTUVWXYX" + c.getCount());
+
+        if (c.getCount() == 0) {
+            return false;
+        }
+
+        if (c.getString(0).equalsIgnoreCase(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override
@@ -57,5 +71,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+        database.execSQL("DROP TABLE IF EXISTS"+Database.TableSchedule.TABLE_NAME);
+        database.execSQL("DROP TABLE IF EXISTS"+Database.TableClass.TABLE_NAME);
+        database.execSQL("DROP TABLE IF EXISTS"+Database.TableVenue.TABLE_NAME);
+        database.execSQL("DROP TABLE IF EXISTS"+Database.TableModule.TABLE_NAME);
+        database.execSQL("DROP TABLE IF EXISTS"+Database.TableUser.TABLE_NAME);
+
+        onCreate(database);
     }
 }

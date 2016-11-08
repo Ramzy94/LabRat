@@ -3,11 +3,10 @@ package com.itrw324.mofokeng.labrat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,6 +23,8 @@ import com.itrw324.mofokeng.labrat.NonActivityClasses.UserAccount;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener  {
 
     private GoogleApiClient googleApiClient;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
     private Toast toast;
 
     @Override
@@ -35,7 +36,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions).build();
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode)
@@ -61,8 +61,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         {
             if(shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS))
             {
-                toast = Toast.makeText(this,"Accounts Are Needed to Login Bra",Toast.LENGTH_SHORT);
-                toast.show();
             }
             requestPermissions(new String[]{Manifest.permission.GET_ACCOUNTS}, LabRatConstants.Permissions.ACCOUNTS_PERMISSION);
         }
@@ -81,36 +79,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        DatabaseHandler handler = new DatabaseHandler(this.getApplicationContext());
+
         if (requestCode == LabRatConstants.SUCCESSFUL_REQUEST) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                toast = Toast.makeText(this,"Signed in as "+acct.getDisplayName(),Toast.LENGTH_LONG);
-
-                DatabaseHandler handler = new DatabaseHandler(this.getApplicationContext());
-
                 UserAccount account = new UserAccount();
-                account.setAccount(acct);
-                account.setRole(UserAccount.STUDENT);
                 account.setUniversity_Number("24604186");
+                account.setRole(UserAccount.STUDENT);
+                account.setAccount(acct);
 
-                handler.insertUser(account);
+                builder.setTitle("User Sign in");
+                builder.setCancelable(true);
 
-                Cursor c = handler.selectUser(account.getAccount().getEmail());
-
-                c.moveToFirst();
-
-                if(c.getCount()==0)
+                if(handler.alreadySignedUp(acct.getEmail()))
                 {
-                    toast = Toast.makeText(this.getApplicationContext(), "Hai No", Toast.LENGTH_LONG);
-                    toast.show();
+                    Intent intent = new Intent(this,UserDeatilsActivity.class);
+                    startActivity(intent);
                 }
                 else
                 {
-                    {
-                        String res = c.getString(0)+"\t"+c.getString(1)+"\t"+c.getString(2)+"\t"+c.getString(3);
-                        Log.println(Log.INFO,"database Bra",res);
-                    }
+                    Intent intent = new Intent(this,UserDeatilsActivity.class);
+                    startActivity(intent);
                 }
             }
             else

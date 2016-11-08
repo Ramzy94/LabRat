@@ -1,28 +1,22 @@
 package com.itrw324.mofokeng.labrat;
 
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.itrw324.mofokeng.labrat.NonActivityClasses.Database;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.UserAccount;
@@ -30,7 +24,6 @@ import com.itrw324.mofokeng.labrat.NonActivityClasses.UserAccount;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener  {
 
     private GoogleApiClient googleApiClient;
-    private SQLiteDatabase database;
     private Toast toast;
 
     @Override
@@ -41,16 +34,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
 
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions).build();
-
-        //Button button = (Button)findViewById(R.id.btnGoogle);
-        //button.setSize(SignInButton.SIZE_STANDARD);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode)
         {
-            case LabRatConstants.ACCOUNTS_PERMISSION: {
+            case LabRatConstants.Permissions.ACCOUNTS_PERMISSION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     signInIntent();
                 }
@@ -74,11 +64,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 toast = Toast.makeText(this,"Acounts Are Needed to Login Bra",Toast.LENGTH_SHORT);
                 toast.show();
             }
-            requestPermissions(new String[]{Manifest.permission.GET_ACCOUNTS}, LabRatConstants.ACCOUNTS_PERMISSION);
+            requestPermissions(new String[]{Manifest.permission.GET_ACCOUNTS}, LabRatConstants.Permissions.ACCOUNTS_PERMISSION);
         }
     }
-
-    //onRequestPermissionsResult
 
     public void signInIntent()
     {
@@ -120,7 +108,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
                 else
                 {
-
                     {
                         String res = c.getString(0)+"\t"+c.getString(1)+"\t"+c.getString(2)+"\t"+c.getString(3);
                         Log.println(Log.INFO,"database Bra",res);

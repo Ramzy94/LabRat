@@ -7,6 +7,7 @@ package com.itrw324.mofokeng.labrat.NonActivityClasses;
 public final class LabRatConstants {
 
     public static final String PACKAGE_NAME = "com\\.itrw324\\.mofokeng\\.labrat";
+    public static final int SUCCESSFUL_REQUEST = 9001;
 
     public final static class Permissions
     {
@@ -15,5 +16,4 @@ public final class LabRatConstants {
          */
         public static final int ACCOUNTS_PERMISSION = 0;
     }
-
 }

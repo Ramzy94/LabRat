@@ -13,8 +13,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "LabRat.db";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "LabRat.db";
+    private SQLiteDatabase database;
 
     public DatabaseHandler(Context context) {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -29,24 +30,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Database.TableUser.COLOUMN_UNIVERSITY_NUMBER,account.getUniversity_Number());
         values.put(Database.TableUser.COLOUMN_ROLE,account.getRole());
 
-        SQLiteDatabase database = this.getWritableDatabase();
+        database = this.getWritableDatabase();
 
         database.insert(Database.TableUser.TABLE_NAME,null,values);
     }
 
     public Cursor selectUser(String email)
     {
-        SQLiteDatabase database = this.getReadableDatabase();
-
-        String columns[] = {Database.TableUser.COLOUMN_USER_EMAIL,Database.TableUser.COLOUMN_DISPLAY_NAME,Database.TableUser.COLOUMN_UNIVERSITY_NUMBER,Database.TableUser.COLOUMN_ROLE};
+        database = this.getReadableDatabase();
 
         String []args = {email};
 
         String sql = "SELECT * FROM "+Database.TableUser.TABLE_NAME+" WHERE "+Database.TableUser.COLOUMN_USER_EMAIL+" = ?;";
-
-        //database.rawQuery()
         return database.rawQuery(sql,args);
-        //return database.query(Database.TableUser.TABLE_NAME,columns,Database.TableUser.COLOUMN_USER_EMAIL,args,null,null,null);
     }
 
     @Override

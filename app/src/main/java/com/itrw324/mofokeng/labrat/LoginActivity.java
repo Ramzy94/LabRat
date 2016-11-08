@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         {
             if(shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS))
             {
-                toast = Toast.makeText(this,"Acounts Are Needed to Login Bra",Toast.LENGTH_SHORT);
+                toast = Toast.makeText(this,"Accounts Are Needed to Login Bra",Toast.LENGTH_SHORT);
                 toast.show();
             }
             requestPermissions(new String[]{Manifest.permission.GET_ACCOUNTS}, LabRatConstants.Permissions.ACCOUNTS_PERMISSION);
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void signInIntent()
     {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, 9001);
+        startActivityForResult(signInIntent, LabRatConstants.SUCCESSFUL_REQUEST);
     }
 
     public void onConnectionFailed(ConnectionResult result)
@@ -81,8 +81,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Toast toast;
-        if (requestCode == 9001) {
+        if (requestCode == LabRatConstants.SUCCESSFUL_REQUEST) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();

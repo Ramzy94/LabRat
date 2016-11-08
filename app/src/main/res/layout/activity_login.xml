@@ -19,13 +19,12 @@
         android:layout_height="wrap_content"
         />
 
-    <com.google.android.gms.common.SignInButton
+    <Button
         android:layout_width="match_parent"
         android:layout_height="@dimen/buttonHeight"
         android:id="@+id/btnGoogle"
         android:text="@string/googlebutton"
-        android:onClick="onClick"
         android:layout_marginBottom="20dp"
-        tools:onClick="onClick" />
+        android:onClick="onClick" />
 
 </LinearLayout>

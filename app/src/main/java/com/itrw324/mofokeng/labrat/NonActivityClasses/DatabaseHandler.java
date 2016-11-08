@@ -38,11 +38,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        String projection[] = {Database.TableUser.COLOUMN_USER_EMAIL,Database.TableUser.COLOUMN_DISPLAY_NAME,Database.TableUser.COLOUMN_UNIVERSITY_NUMBER,Database.TableUser.COLOUMN_ROLE};
+        String columns[] = {Database.TableUser.COLOUMN_USER_EMAIL,Database.TableUser.COLOUMN_DISPLAY_NAME,Database.TableUser.COLOUMN_UNIVERSITY_NUMBER,Database.TableUser.COLOUMN_ROLE};
 
         String []args = {email};
 
-        return database.query(Database.TableUser.TABLE_NAME,projection,Database.TableUser.COLOUMN_USER_EMAIL,args,null,null,null);
+        String sql = "SELECT * FROM "+Database.TableUser.TABLE_NAME+" WHERE "+Database.TableUser.COLOUMN_USER_EMAIL+" = ?;";
+
+        //database.rawQuery()
+        return database.rawQuery(sql,args);
+        //return database.query(Database.TableUser.TABLE_NAME,columns,Database.TableUser.COLOUMN_USER_EMAIL,args,null,null,null);
     }
 
     @Override

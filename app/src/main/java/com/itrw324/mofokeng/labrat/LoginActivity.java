@@ -1,12 +1,19 @@
 package com.itrw324.mofokeng.labrat;
 
+import android.*;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,6 +24,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.Database;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.UserAccount;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener  {
@@ -34,14 +42,48 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions).build();
 
-        SignInButton button = (SignInButton)findViewById(R.id.btnGoogle);
-        button.setSize(SignInButton.SIZE_STANDARD);
+        //Button button = (Button)findViewById(R.id.btnGoogle);
+        //button.setSize(SignInButton.SIZE_STANDARD);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode)
+        {
+            case LabRatConstants.ACCOUNTS_PERMISSION: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    signInIntent();
+                }
+                else {
+                    toast = Toast.makeText(this,"Nope",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }break;
+        }
     }
 
     public void onClick(View view)
     {
+        if(checkSelfPermission(Manifest.permission.GET_ACCOUNTS)== PackageManager.PERMISSION_GRANTED) {
+            this.signInIntent();
+        }
+        else
+        {
+            if(shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS))
+            {
+                toast = Toast.makeText(this,"Acounts Are Needed to Login Bra",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            requestPermissions(new String[]{Manifest.permission.GET_ACCOUNTS}, LabRatConstants.ACCOUNTS_PERMISSION);
+        }
+    }
+
+    //onRequestPermissionsResult
+
+    public void signInIntent()
+    {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent,9001);
+        startActivityForResult(signInIntent, 9001);
     }
 
     public void onConnectionFailed(ConnectionResult result)
@@ -78,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
                 else
                 {
-                    while (!c.isLast())
+
                     {
                         String res = c.getString(0)+"\t"+c.getString(1)+"\t"+c.getString(2)+"\t"+c.getString(3);
                         Log.println(Log.INFO,"database Bra",res);

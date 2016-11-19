@@ -18,10 +18,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UserDeatilsActivity"
-            android:label="@string/title_activity_user_deatils"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>

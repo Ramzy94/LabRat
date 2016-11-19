@@ -36,6 +36,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.insert(Database.TableUser.TABLE_NAME, null, values);
     }
 
+    private void insertVenues()
+    {
+
+    }
+
+    private void insertModules()
+    {
+
+    }
+
     public boolean alreadySignedUp(String email) {
         database = this.getReadableDatabase();
 

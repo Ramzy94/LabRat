@@ -1,6 +1,8 @@
 package com.itrw324.mofokeng.labrat;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -8,107 +10,147 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatDialogs;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.UserAccount;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener  {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
     private GoogleApiClient googleApiClient;
-    private AlertDialog.Builder builder;
+    private DatabaseHandler handler;
+    private Context context;
+    private GoogleSignInAccount acct;
+    private SignInButton button;
     private AlertDialog dialog;
     private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
+        setTitle(R.string.title_login);
+
+        context = this.getApplicationContext();
+        button = (SignInButton) findViewById(R.id.btnGoogle);
+        button.setOnClickListener(this);
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
 
-        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions).build();
+        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case LabRatConstants.Permissions.ACCOUNTS_PERMISSION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     signInIntent();
-                }
-                else {
-                    toast = Toast.makeText(this,"Nope",Toast.LENGTH_SHORT);
+                } else {
+                    toast = Toast.makeText(this, "Nope", Toast.LENGTH_SHORT);
                     toast.show();
                 }
-            }break;
+            }
+            break;
         }
     }
 
-    public void onClick(View view)
-    {
-        if(checkSelfPermission(Manifest.permission.GET_ACCOUNTS)== PackageManager.PERMISSION_GRANTED) {
+    public void onClick(View view) {
+        if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
             this.signInIntent();
-        }
-        else
-        {
-            if(shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS))
-            {
+        } else {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS)) {
+
             }
             requestPermissions(new String[]{Manifest.permission.GET_ACCOUNTS}, LabRatConstants.Permissions.ACCOUNTS_PERMISSION);
         }
     }
 
-    public void signInIntent()
-    {
+    public void signInIntent() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, LabRatConstants.SUCCESSFUL_REQUEST);
     }
 
-    public void onConnectionFailed(ConnectionResult result)
-    {
+    public void onConnectionFailed(ConnectionResult result) {
     }
 
-    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        DatabaseHandler handler = new DatabaseHandler(this.getApplicationContext());
+        handler = new DatabaseHandler(context);
 
         if (requestCode == LabRatConstants.SUCCESSFUL_REQUEST) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                UserAccount account = new UserAccount();
-                account.setUniversity_Number("24604186");
-                account.setRole(UserAccount.STUDENT);
-                account.setAccount(acct);
+                acct = result.getSignInAccount();
 
-                builder.setTitle("User Sign in");
-                builder.setCancelable(true);
-
-                if(handler.alreadySignedUp(acct.getEmail()))
-                {
-                    Intent intent = new Intent(this,UserDeatilsActivity.class);
+                if (handler.alreadySignedUp(acct.getEmail())) {
+                    Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);
+                } else {
+                    LabRatDialogs dialogs = new LabRatDialogs(this);
+                    dialog = getDialog(0);
+                    dialog.show();
                 }
-                else
-                {
-                    Intent intent = new Intent(this,UserDeatilsActivity.class);
-                    startActivity(intent);
-                }
+            } else {
+                toast = Toast.makeText(this, "Login Unsuccessful", Toast.LENGTH_LONG);
             }
-            else
-            {
-                toast = Toast.makeText(this,"Login Unsuccessful",Toast.LENGTH_LONG);
-            }
-            toast.show();
         }
     }
+
+    private AlertDialog getDialog(int Dialog) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        switch (Dialog) {
+            case 0: {
+                builder.setView(R.layout.content_dialog);
+                builder.setTitle(R.string.moreDetails);
+                builder.setCancelable(false);
+                builder.setPositiveButton(R.string.btnProceed, new DetailsDialog());
+            }
+            break;
+            case 1: {
+                builder.setTitle(R.string.permission_Accounts_Header);
+                builder.setMessage(R.string.permission_Accounts);
+                builder.setCancelable(true);
+            }
+            break;
+        }
+
+        return builder.create();
+    }
+
+
+    class DetailsDialog implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+
+            EditText text = (EditText) dialog.findViewById(R.id.txt_UNum);
+            CheckBox checkBox = (CheckBox) dialog.findViewById(R.id.chkLecturer);
+
+            UserAccount account = new UserAccount(acct, text.getText().toString());
+
+            if (checkBox.isChecked())
+                account.setRole(UserAccount.LECTURER);
+            else
+                account.setRole(UserAccount.STUDENT);
+
+            LabRatConstants.LOGGED_IN = account;
+
+            Intent intent = new Intent(context, MainActivity.class);
+            startActivity(intent);
+        }
+    }
+
 }

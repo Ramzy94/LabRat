@@ -15,16 +15,19 @@
     android:clickable="false">
 
     <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="216dp"
+        app:srcCompat="@drawable/computer2" />
+
+    <com.google.android.gms.common.SignInButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/buttonHeight"
         android:id="@+id/btnGoogle"
         android:text="@string/googlebutton"
-        android:layout_marginBottom="20dp"
-        android:onClick="onClick" />
+        android:layout_marginBottom="20dp" />
 
 </LinearLayout>

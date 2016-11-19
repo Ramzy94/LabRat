@@ -14,8 +14,11 @@ public class UserAccount   {
     private int role;
     private String university_Number;
 
+    public UserAccount(GoogleSignInAccount account, String university_Number) {
+        setAccount(account);
+        setUniversity_Number(university_Number);
+    }
 
-    //
     public String getUniversity_Number() {
         return university_Number;
     }

@@ -13,4 +13,10 @@
     tools:context="com.itrw324.mofokeng.labrat.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/fragContainer"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
 </RelativeLayout>

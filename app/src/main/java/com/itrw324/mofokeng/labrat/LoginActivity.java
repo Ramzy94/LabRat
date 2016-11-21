@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,6 +22,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatDialogs;
@@ -48,7 +52,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
 
+
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
+        success();
+
+
     }
 
     @Override
@@ -83,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void onConnectionFailed(ConnectionResult result) {
+        Log.println(Log.ERROR,"Yoh","No Connection bra");
     }
 
     @Override
@@ -110,6 +119,35 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
+    public void success()
+    {
+        toast = Toast.makeText(context,"Yess Bitch",Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    public void res()
+    {
+        toast = Toast.makeText(context,"Yess djdsj",Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+
+        if(intent.getBooleanExtra("SIGN_OUT",false))
+        {
+           // googleApiClient = LabRatConstants.API_CLIENT;
+            //signOut();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     private AlertDialog getDialog(int Dialog) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch (Dialog) {
@@ -132,6 +170,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
+    private void revokeAccess() {
+        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        toast = Toast.makeText(context,"Successfully Signed Out",Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                });
+    }
+
+    public void signOut(MenuItem item) {
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        revokeAccess();
+                    }
+                });
+    }
+
+
     class DetailsDialog implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -147,6 +207,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 account.setRole(UserAccount.STUDENT);
 
             LabRatConstants.LOGGED_IN = account;
+            LabRatConstants.API_CLIENT = googleApiClient;
 
             Intent intent = new Intent(context, MainActivity.class);
             startActivity(intent);

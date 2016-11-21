@@ -23,6 +23,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public void insertClass(Class universityClass)
+    {
+        ContentValues values = new ContentValues();
+        values.put(Database.TableClass.COLOUMN_CLASS_PERIOD,universityClass.getClass_Period());
+        values.put(Database.TableClass.COLOUMN_CLASS_DAY,universityClass.getDay());
+        values.put(Database.TableClass.COLOUMN_MODULE_CODE,universityClass.getModule_Code());
+        values.put(Database.TableClass.COLOUMN_VENUEID,this.getVenueID(universityClass));
+
+        database = getWritableDatabase();
+        database.insert(Database.TableClass.TABLE_NAME,null,values);
+    }
+
 
     public void insertUser(UserAccount account) {
         ContentValues values = new ContentValues();
@@ -36,17 +48,140 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.insert(Database.TableUser.TABLE_NAME, null, values);
     }
 
-    private void insertVenues()
+    public String getVenueID(Class universityClass)
     {
+        String sql = "SELECT * FROM "+ Database.TableVenue.TABLE_NAME + " WHERE "+Database.TableVenue.COLOUMN_VENU_NAME+" = ?";
 
+        database = getReadableDatabase();
+
+        String whereClause[] = {universityClass.getVenueID()};
+
+        Cursor c = database.rawQuery(sql,whereClause);
+        c.moveToFirst();
+
+        //Log.println(Log.DEBUG,"Yeah","There are "+c.getCount()+" Venues in this Table");
+        return c.getString(0);
     }
 
-    private void insertModules()
+    public String getVenueName(int venueID)
     {
+        String sql = "SELECT * FROM "+ Database.TableVenue.TABLE_NAME + " WHERE "+Database.TableVenue.COLOUMN_VENUEID+" = ?";
 
+        database = getReadableDatabase();
+
+        String whereClause[] = {String.valueOf(venueID)};
+
+        Cursor c = database.rawQuery(sql,whereClause);
+        c.moveToFirst();
+
+        Log.println(Log.DEBUG,"Venue","There are "+c.getCount()+" Venues in this List");
+        return c.getString(1);
+    }
+
+    public String[] getVenueList()
+    {
+        String sql = "SELECT * FROM "+ Database.TableVenue.TABLE_NAME + ";";
+
+        database = getReadableDatabase();
+        Cursor c = database.rawQuery(sql,null);
+        c.moveToFirst();
+
+        String results[] = new String[c.getCount()];
+
+        Log.println(Log.DEBUG,"Venues","There are "+c.getCount()+" Venues in this Table");
+
+        for (int i=0;i<c.getCount();i++)
+        {
+            Log.println(Log.DEBUG,"Yeah",c.getString(0)+"\t"+c.getString(1)+"\t");
+            results[i] = c.getString(1);
+            c.moveToNext();
+        }
+        return results;
+    }
+
+    public Class[] getClassList()
+    {
+        String sql = "SELECT * FROM "+ Database.TableClass.TABLE_NAME+ ";";
+
+        database = getReadableDatabase();
+        Cursor c = database.rawQuery(sql,null);
+        c.moveToFirst();
+
+        Class results[] = new Class[c.getCount()];
+
+        Log.println(Log.DEBUG,"Classes","There are "+c.getCount()+" Classes in this Table");
+
+        for (int i=0;i<c.getCount();i++)
+        {
+            Log.println(Log.DEBUG,"Yeah",c.getString(0)+"\t"+c.getString(1)+"\t");
+            String venue = this.getVenueName(Integer.parseInt(c.getString(3)));
+            int classP = Integer.parseInt(c.getString(1));
+            results[i] = new Class(classP,venue,c.getString(4),c.getString(2));
+            results[i].setClassID(c.getString(0));
+            c.moveToNext();
+        }
+        return results;
+    }
+
+    public void insertVenues()
+    {
+        database = this.getWritableDatabase();
+        String venues[] = {"9A-102","9A-103","9A-104","9A-106","9A-107","3-103"};
+        String vNames[] = {"Buffel","Luiperd","Leeu","Renoster","Tavern","Walvis"};
+
+        ContentValues values = new ContentValues();
+
+        for (int i=0;i<venues.length;i++)
+        {
+            //values.put(Database.TableVenue.COLOUMN_VENUEID,venues[i]);
+            values.put(Database.TableVenue.COLOUMN_VENU_NAME,venues[i]);
+
+            database.insert(Database.TableVenue.TABLE_NAME,null,values);
+        }
+    }
+
+    public void insertModules()
+    {
+        database = this.getWritableDatabase();
+
+        String[] modules = {"ITRW321","ITRW322","ITRW324","ITRW325","ITRW124","ITRW123","ITRW225","ITRW222","STTF121","ITSP121"};
+        String[] description = {
+                "Databases II","Computer Networks","IT Developments","Decision Support Systems II","Programming I","Graphic Interface Programming I",
+                "Systems Analysis and Design II","Data Structures and Algorithms","Foundation Statistics II","Introductory Programming Principles"};
+
+        ContentValues values = new ContentValues();
+
+        for(int i=0;i<modules.length;i++) {
+            values.put(Database.TableModule.COLOUMN_MODULE_CODE, modules[i]);
+            values.put(Database.TableModule.COLOUMN_MODULE_DESCR,description[i]);
+            values.put(Database.TableModule.COLOUMN_MODULE_LECTURER, (byte[]) null);
+            database.insert(Database.TableModule.TABLE_NAME,null,values);
+        }
+    }
+
+    public String[] getModuleList()
+    {
+        String sql = "SELECT * FROM "+ Database.TableModule.TABLE_NAME + ";";
+
+        database = getReadableDatabase();
+        Cursor c = database.rawQuery(sql,null);
+        c.moveToFirst();
+
+        String results[] = new String[c.getCount()];
+
+        Log.println(Log.DEBUG,"Yeah","There are "+c.getCount()+" Modules in this Table");
+
+        for (int i=0;i<c.getCount();i++)
+        {
+            Log.println(Log.DEBUG,"Yeah",c.getString(0)+"\t"+c.getString(1)+"\t"+c.getString(2));
+            results[i] = c.getString(0);
+            c.moveToNext();
+        }
+        return results;
     }
 
     public boolean alreadySignedUp(String email) {
+
         database = this.getReadableDatabase();
 
         String[] args = {email};
@@ -76,6 +211,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.execSQL(Database.SQL_CREATE_VENUE);
         database.execSQL(Database.SQL_CREATE_CLASS);
         database.execSQL(Database.SQL_CREATE_SCHEDULE);
+
     }
 
     @Override

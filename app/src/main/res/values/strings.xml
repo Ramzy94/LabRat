@@ -14,6 +14,9 @@
     <!-- Title Bar Text-->
     <string name="title_login">Labrat Login</string>
     <string name="title_schdule">My Schedule</string>
+    <string name="title_classes">Available Classes</string>
+    <string name="title_venues">Venues</string>
+    <string name="title_devblog">Development Blog</string>
 
     <!-- FragmentLab Srings-->
     <string name="spinner_select">Select a Venue</string>
@@ -34,6 +37,15 @@
         <item>Friday</item>
     </string-array>
 
+    <string-array name="periodArray">
+        <item>1:08:00</item>
+        <item>2:09:30</item>
+        <item>3:11:00</item>
+        <item>4:12:30</item>
+        <item>5:14:00</item>
+        <item>6:15:30</item>
+    </string-array>
+
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 
@@ -50,6 +62,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    
+
 
 </resources>

@@ -10,4 +10,8 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="spinner_spacing">60dp</dimen>
+
+    <!-- LabRat Padding-->
+    <dimen name="top_Padding">15dp</dimen>
+    <dimen name="side_Padding">5dp</dimen>
 </resources>

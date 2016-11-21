@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:paddingTop="30dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.itrw324.mofokeng.labrat.UIFragments.ClassFragment">
-
-    <!-- TODO: Update blank fragment layout -->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/classFab"
@@ -17,5 +17,16 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/add_black_24dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/classLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

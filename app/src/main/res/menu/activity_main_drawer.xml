@@ -12,20 +12,15 @@
             android:icon="@drawable/dark_classroom"
             android:title="@string/menuItemClasses" />
         <item
-            android:id="@+id/nav_modules"
-            android:icon="@drawable/dark_module"
-            android:title="@string/menuItemModules" />
-        <item
             android:id="@+id/nav_venues"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/dark_workstation"
             android:title="@string/menuItemVenue" />
-    </group>
-
-    <group>
         <item
             android:id="@+id/nav_devBlog"
             android:icon="@drawable/dark_source_code"
             android:title="@string/menuItemDevBlog" />
+    </group>
+    <group>
         <item
             android:id="@+id/nav_signout"
             android:icon="@drawable/dark_user"

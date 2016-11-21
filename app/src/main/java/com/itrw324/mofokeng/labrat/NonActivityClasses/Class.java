@@ -9,14 +9,24 @@ public class Class {
     private String classID;
     private int class_Period;
     private String classTime;
+    private String day;
     private String venueID;
     private String module_Code;
 
-    public Class(int class_Period, String venueID, String module_Code) {
+    public Class(int class_Period, String venueID, String module_Code,String day) {
         this.setClass_Period(class_Period);
         this.setVenueID(venueID);
         this.setModule_Code(module_Code);
         this.setClassTime(this.getClass_Period());
+        this.setDay(day);
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 
     public String getClassID() {

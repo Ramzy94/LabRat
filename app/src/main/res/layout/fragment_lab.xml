@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:numColumns="6"
-            android:background="@color/colorAccent"
             android:columnWidth="90dp"
             android:verticalSpacing="15dp"
             >

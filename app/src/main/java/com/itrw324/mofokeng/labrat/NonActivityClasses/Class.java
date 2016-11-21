@@ -13,6 +13,11 @@ public class Class {
     private String venueID;
     private String module_Code;
 
+    public Class()
+    {
+
+    }
+
     public Class(int class_Period, String venueID, String module_Code,String day) {
         this.setClass_Period(class_Period);
         this.setVenueID(venueID);

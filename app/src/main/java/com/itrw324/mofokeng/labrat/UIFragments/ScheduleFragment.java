@@ -4,10 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.itrw324.mofokeng.labrat.NonActivityClasses.Class;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.Database;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.Schedule;
 import com.itrw324.mofokeng.labrat.R;
 
 /**
@@ -61,11 +70,53 @@ public class ScheduleFragment extends Fragment {
         }
     }
 
+    public CardView createCardView(final Class uniClass, LayoutInflater inflater, final Schedule theSchedule)
+    {
+        CardView card = (CardView) inflater.inflate(R.layout.card, null);
+        ((TextView) card.findViewById(R.id.txtDay)).setText(uniClass.getDay());
+        ((TextView) card.findViewById(R.id.txtModcode)).setText(uniClass.getModule_Code());
+        ((TextView) card.findViewById(R.id.txtVenue)).setText(uniClass.getVenueID());
+        ((TextView) card.findViewById(R.id.txtPeriod)).setText(uniClass.getClassTime());
+
+        card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Schedule Notification");
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK",null);
+                builder.setMessage("Removed From Schedule, PLease Refresh");
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                DatabaseHandler handler = new DatabaseHandler(getActivity());
+                handler.deleteSchedule(theSchedule);
+            }
+        });
+
+        return card;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        LinearLayout scheduleLayout = (LinearLayout)view.findViewById(R.id.scheduleLayout);
+
+        DatabaseHandler handler = new DatabaseHandler(getActivity());
+        Schedule[]schedules = handler.getMySchedule(LabRatConstants.LOGGED_IN);
+
+        for (int i=0;i<schedules.length;i++)
+        {
+            Class nwuClass = handler.getOneClass(schedules[i].getClassID());
+
+            scheduleLayout.addView(createCardView(nwuClass,inflater,schedules[i]));
+        }
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

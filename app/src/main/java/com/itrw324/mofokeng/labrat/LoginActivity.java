@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 acct = result.getSignInAccount();
 
                 if (handler.alreadySignedUp(acct.getEmail())) {
+                    LabRatConstants.LOGGED_IN = acct;
                     Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);
                 } else {
@@ -206,8 +207,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             else
                 account.setRole(UserAccount.STUDENT);
 
-            LabRatConstants.LOGGED_IN = account;
+            LabRatConstants.LOGGED_IN = account.getAccount();
             LabRatConstants.API_CLIENT = googleApiClient;
+
+
 
             Intent intent = new Intent(context, MainActivity.class);
             startActivity(intent);

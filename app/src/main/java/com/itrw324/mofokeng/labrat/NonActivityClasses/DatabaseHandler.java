@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 
 /**
  * Created by Mofokeng on 06-Nov-16.
@@ -63,6 +65,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return c.getString(0);
     }
 
+
+
     public String getVenueName(int venueID)
     {
         String sql = "SELECT * FROM "+ Database.TableVenue.TABLE_NAME + " WHERE "+Database.TableVenue.COLOUMN_VENUEID+" = ?";
@@ -96,6 +100,89 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             results[i] = c.getString(1);
             c.moveToNext();
         }
+        return results;
+    }
+
+    public String getClassID(Class campusClass)
+    {
+        String sql = "SELECT "+Database.TableClass.COLOUMN_CLASS_ID+" FROM "+ Database.TableClass.TABLE_NAME + " WHERE "+Database.TableClass.COLOUMN_CLASS_PERIOD+" = ? AND "+Database.TableClass.COLOUMN_CLASS_DAY+" = ? AND "+Database.TableClass.COLOUMN_MODULE_CODE+" = ?;";
+
+        database = getReadableDatabase();
+
+        String whereClause[] = {String.valueOf(campusClass.getClass_Period()),campusClass.getDay(),campusClass.getModule_Code()};
+
+        Cursor c = database.rawQuery(sql,whereClause);
+        c.moveToFirst();
+
+        Log.println(Log.DEBUG,"ClasID","There is "+c.getCount()+" ClassID in this List");
+        return c.getString(0);
+    }
+
+    public void addToSchedule(Class universityClass,GoogleSignInAccount user)
+    {
+        ContentValues values = new ContentValues();
+        values.put(Database.TableSchedule.COLOUMN_CLASS_ID,universityClass.getClassID());
+        values.put(Database.TableSchedule.COLOUMN_USER_EMAIL,user.getEmail());
+
+        database = this.getWritableDatabase();
+
+        database.insert(Database.TableSchedule.TABLE_NAME,null,values);
+    }
+
+    public void deleteSchedule(Schedule schedule)
+    {
+        String sql = "DELETE FROM "+ Database.TableSchedule.TABLE_NAME + " WHERE "+Database.TableSchedule.COLOUMN_SCHEDULEID+" = "+schedule.getClassID();
+        database = getWritableDatabase();
+
+        database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+    public Schedule[] getMySchedule(GoogleSignInAccount account)
+    {
+        String sql = "SELECT * FROM "+ Database.TableSchedule.TABLE_NAME + " WHERE "+ Database.TableSchedule.COLOUMN_USER_EMAIL+" = ?;";
+
+        database = getReadableDatabase();
+        String results[] = {account.getEmail()};
+        Cursor c = database.rawQuery(sql,results);
+        c.moveToFirst();
+
+        Schedule schedule[] = new Schedule[c.getCount()];
+
+        Log.println(Log.DEBUG,"Venues","There are "+c.getCount()+" Classes in my schedule");
+
+        for (int i=0;i<c.getCount();i++)
+        {
+            Log.println(Log.DEBUG,"Schedule",c.getString(0)+"\t"+c.getString(1)+"\t"+c.getString(2));
+            int clID = Integer.parseInt(c.getString(2));
+            int schId = Integer.parseInt(c.getString(0));
+            schedule[i] = new Schedule(schId,c.getString(1),clID);
+
+            c.moveToNext();
+        }
+        return schedule;
+    }
+
+    public Class getOneClass(int classID) {
+        String sql = "SELECT * FROM " + Database.TableClass.TABLE_NAME + " WHERE " + Database.TableClass.COLOUMN_CLASS_ID + " = ?";
+
+        database = getReadableDatabase();
+        String whereClause[] = {String.valueOf(classID)};
+        Cursor c = database.rawQuery(sql, whereClause);
+        c.moveToFirst();
+
+
+        Log.println(Log.DEBUG, "Classes", "There are " + c.getCount() + " Classes in this Table");
+
+
+        Log.println(Log.DEBUG, "Yeah", c.getString(0) + "\t" + c.getString(1) + "\t");
+
+        String venue = this.getVenueName(Integer.parseInt(c.getString(3)));
+        int classP = Integer.parseInt(c.getString(1));
+        Class results = new Class(classP, venue, c.getString(4), c.getString(2));
+        results.setClassID(c.getString(0));
+        c.moveToNext();
+
         return results;
     }
 

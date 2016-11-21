@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 
 import com.itrw324.mofokeng.labrat.NonActivityClasses.Class;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatDialogs;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.Schedule;
 import com.itrw324.mofokeng.labrat.R;
 
 /**
@@ -105,17 +108,32 @@ public class ClassFragment extends Fragment {
         }
     }
 
-    public CardView createCardView(Class uniClass,LayoutInflater inflater) {
+    public CardView createCardView(final Class uniClass, LayoutInflater inflater) {
         CardView card = (CardView) inflater.inflate(R.layout.card, null);
         ((TextView) card.findViewById(R.id.txtDay)).setText(uniClass.getDay());
         ((TextView) card.findViewById(R.id.txtModcode)).setText(uniClass.getModule_Code());
         ((TextView) card.findViewById(R.id.txtVenue)).setText(uniClass.getVenueID());
         ((TextView) card.findViewById(R.id.txtPeriod)).setText(uniClass.getClassTime());
 
-        card.setOnClickListener(new View.OnClickListener() {
+        card.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK",null);
+                builder.setMessage("Added To Schedule, Please Refresh");
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
+                DatabaseHandler handler = new DatabaseHandler(getActivity());
+                handler.addToSchedule(uniClass, LabRatConstants.LOGGED_IN);
+                Schedule a[] =handler.getMySchedule(LabRatConstants.LOGGED_IN);
+
+                for(Schedule s:a)
+                {
+                    Log.println(Log.DEBUG,"Work",s.getUserEmail()+s.getClassID());
+                }
             }
         });
 

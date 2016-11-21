@@ -1,11 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:paddingTop="30dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/top_Padding"
-    android:paddingRight="@dimen/side_Padding"
-    android:paddingLeft="@dimen/side_Padding"
+    android:fitsSystemWindows="true"
     tools:context="com.itrw324.mofokeng.labrat.UIFragments.ScheduleFragment">
 
-</LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/scheduleLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

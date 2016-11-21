@@ -54,7 +54,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
-        success();
+        handler = new DatabaseHandler(this);
+        handler.insertModules();
+        handler.insertVenues();
 
 
     }

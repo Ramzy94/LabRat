@@ -7,8 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
 import com.itrw324.mofokeng.labrat.R;
 
 import java.util.Random;
@@ -35,6 +42,7 @@ public class LabFragment extends Fragment {
     private Random rndm;
 
     private OnFragmentInteractionListener mListener;
+    private Integer mThumbIds[];
 
     public LabFragment() {
         // Required empty public constructor
@@ -70,12 +78,15 @@ public class LabFragment extends Fragment {
     public void assignFreePCs()
     {
         rndm = new Random();
-        free = new int[5][6];
+        mThumbIds = new Integer[22];
 
-        for (int i=0;i<free.length;i++)
-        {
-            for (int j=0;j<free[i].length;j++)
-                free[i][j] = rndm.nextInt(2);
+        //int num = rndm.nextInt(2);
+        for(int i = 0;i<mThumbIds.length;i++) {
+            int num = rndm.nextInt(2);
+            if (num == 0)
+                mThumbIds[i] = R.drawable.workstation_red2;
+            else
+                mThumbIds[i]= R.drawable.workstation_green;
         }
     }
 
@@ -84,6 +95,29 @@ public class LabFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_lab, container, false);
+
+        String venues[] = new DatabaseHandler(getActivity()).getVenueList();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item);
+
+        for(String venue:venues)
+        {
+            adapter.add(venue);
+        }
+
+        Spinner venueSpinner = (Spinner)view.findViewById(R.id.labSpinner);
+        venueSpinner.setAdapter(adapter);
+
+        GridView gridview = (GridView) view.findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(getActivity()));
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(getActivity(), "" + position,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
@@ -127,5 +161,47 @@ public class LabFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+     class ImageAdapter extends BaseAdapter {
+        private Context mContext;
+
+
+        public ImageAdapter(Context c) {
+            assignFreePCs();
+            mContext = c;
+        }
+
+        public int getCount() {
+            return mThumbIds.length;
+        }
+
+        public Object getItem(int position) {
+            return null;
+        }
+
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        // create a new ImageView for each item referenced by the Adapter
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView imageView;
+            if (convertView == null) {
+                // if it's not recycled, initialize some attributes
+                imageView = new ImageView(mContext);
+                imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setPadding(8, 8, 8, 8);
+            } else {
+                imageView = (ImageView) convertView;
+            }
+
+            imageView.setImageResource(mThumbIds[position]);
+            return imageView;
+        }
+
+        // references to our images
+
     }
 }

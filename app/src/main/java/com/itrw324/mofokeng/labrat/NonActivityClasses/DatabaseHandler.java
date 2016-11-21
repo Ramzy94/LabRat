@@ -212,37 +212,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void insertVenues()
     {
-        database = this.getWritableDatabase();
-        String venues[] = {"9A-102","9A-103","9A-104","9A-106","9A-107","3-103"};
-        String vNames[] = {"Buffel","Luiperd","Leeu","Renoster","Tavern","Walvis"};
+        if(getVenueList().length==0) {
+            database = this.getWritableDatabase();
+            String venues[] = {"9A-102", "9A-103", "9A-104", "9A-106", "9A-107", "3-103"};
+            String vNames[] = {"Buffel", "Luiperd", "Leeu", "Renoster", "Tavern", "Walvis"};
 
-        ContentValues values = new ContentValues();
+            ContentValues values = new ContentValues();
 
-        for (int i=0;i<venues.length;i++)
-        {
-            //values.put(Database.TableVenue.COLOUMN_VENUEID,venues[i]);
-            values.put(Database.TableVenue.COLOUMN_VENU_NAME,venues[i]);
+            for (int i = 0; i < venues.length; i++) {
+                //values.put(Database.TableVenue.COLOUMN_VENUEID,venues[i]);
+                values.put(Database.TableVenue.COLOUMN_VENU_NAME, venues[i]);
 
-            database.insert(Database.TableVenue.TABLE_NAME,null,values);
+                database.insert(Database.TableVenue.TABLE_NAME, null, values);
+            }
         }
     }
 
     public void insertModules()
     {
-        database = this.getWritableDatabase();
+        if(getModuleList().length==0) {
+            database = this.getWritableDatabase();
 
-        String[] modules = {"ITRW321","ITRW322","ITRW324","ITRW325","ITRW124","ITRW123","ITRW225","ITRW222","STTF121","ITSP121"};
-        String[] description = {
-                "Databases II","Computer Networks","IT Developments","Decision Support Systems II","Programming I","Graphic Interface Programming I",
-                "Systems Analysis and Design II","Data Structures and Algorithms","Foundation Statistics II","Introductory Programming Principles"};
+            String[] modules = {"ITRW321", "ITRW322", "ITRW324", "ITRW325", "ITRW124", "ITRW123", "ITRW225", "ITRW222", "STTF121", "ITSP121"};
+            String[] description = {
+                    "Databases II", "Computer Networks", "IT Developments", "Decision Support Systems II", "Programming I", "Graphic Interface Programming I",
+                    "Systems Analysis and Design II", "Data Structures and Algorithms", "Foundation Statistics II", "Introductory Programming Principles"};
 
-        ContentValues values = new ContentValues();
+            ContentValues values = new ContentValues();
 
-        for(int i=0;i<modules.length;i++) {
-            values.put(Database.TableModule.COLOUMN_MODULE_CODE, modules[i]);
-            values.put(Database.TableModule.COLOUMN_MODULE_DESCR,description[i]);
-            values.put(Database.TableModule.COLOUMN_MODULE_LECTURER, (byte[]) null);
-            database.insert(Database.TableModule.TABLE_NAME,null,values);
+            for (int i = 0; i < modules.length; i++) {
+                values.put(Database.TableModule.COLOUMN_MODULE_CODE, modules[i]);
+                values.put(Database.TableModule.COLOUMN_MODULE_DESCR, description[i]);
+                values.put(Database.TableModule.COLOUMN_MODULE_LECTURER, (byte[]) null);
+                database.insert(Database.TableModule.TABLE_NAME, null, values);
+            }
         }
     }
 

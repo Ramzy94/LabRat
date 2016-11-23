@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragTransaction = fragManager.beginTransaction();
         fragTransaction.add(R.id.fragContainer,new ScheduleFragment()).commit();
 
+        setTitle(R.string.title_schdule);
     }
 
     @Override

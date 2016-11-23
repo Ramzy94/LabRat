@@ -34,22 +34,22 @@
                     android:layout_width="wrap_content"
                     android:id="@+id/txtModcode"
                     android:layout_height="wrap_content"
-                    android:text="ITRW324"/>
+                    android:text="Module Code"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtDay"
-                    android:text="Monday"/>
+                    android:text="Day"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtPeriod"
-                    android:text="08:00"/>
+                    android:text="Class Time"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtVenue"
-                    android:text="B3 - 103"/>
+                    android:text="Venue"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

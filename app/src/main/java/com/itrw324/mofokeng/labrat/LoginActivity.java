@@ -26,7 +26,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
-import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatDialogs;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.UserAccount;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -112,7 +111,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);
                 } else {
-                    LabRatDialogs dialogs = new LabRatDialogs(this);
                     dialog = getDialog(0);
                     dialog.show();
                 }

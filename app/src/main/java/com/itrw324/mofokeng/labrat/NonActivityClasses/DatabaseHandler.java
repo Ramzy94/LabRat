@@ -133,8 +133,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         String sql = "DELETE FROM "+ Database.TableSchedule.TABLE_NAME + " WHERE "+Database.TableSchedule.COLOUMN_SCHEDULEID+" = "+schedule.getClassID();
         database = getWritableDatabase();
+        database.execSQL(sql);
+    }
 
+    public void updateClass(Class campusClass)
+    {
+        String venueID = getVenueID(campusClass);
+        int vID = Integer.parseInt(venueID);
+
+        String sql = "UPDATE "+Database.TableClass.TABLE_NAME + " SET "+Database.TableClass.COLOUMN_CLASS_DAY+"=\""+campusClass.getDay()+"\", "+Database.TableClass.COLOUMN_CLASS_PERIOD+"="+campusClass.getClass_Period()+", "+Database.TableClass.COLOUMN_VENUEID+"="+venueID+" WHERE "+Database.TableClass.COLOUMN_CLASS_ID+" = "+campusClass.getClassID()+";";
         database = getWritableDatabase();
+
         database.execSQL(sql);
     }
 

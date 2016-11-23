@@ -8,12 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
+        android:spinnerMode="dropdown"
         android:id="@+id/moduleSpinner" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
+        android:spinnerMode="dropdown"
         android:entries="@array/daysArray"
         android:id="@+id/daySpinner" />
 
@@ -21,12 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
+        android:spinnerMode="dropdown"
         android:entries="@array/periodArray"
         android:id="@+id/periodSpinner" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
         android:paddingBottom="15dp"
         android:id="@+id/venueSpinner" />
 </LinearLayout>

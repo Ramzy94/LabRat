@@ -64,6 +64,20 @@ public class Class {
 
     public void setClass_Period(int class_Period) {
         this.class_Period = class_Period;
+        this.setClassTime(this.getClass_Period());
+    }
+
+    public int getDaySpinnerValue()
+    {
+        if(getDay().equalsIgnoreCase("Monday"))
+            return 0;
+        else if(getDay().equalsIgnoreCase("Tuesday"))
+            return 1;
+        else if (getDay().equalsIgnoreCase("Wednesday"))
+            return 2;
+        else if (getDay().equalsIgnoreCase("Thursday"))
+            return 3;
+        else return 4;
     }
 
     public String getVenueID() {

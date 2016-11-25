@@ -48,16 +48,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         context = this.getApplicationContext();
         button = (SignInButton) findViewById(R.id.btnGoogle);
         button.setOnClickListener(this);
+        button.setSize(SignInButton.SIZE_STANDARD);
+        button.setBackgroundColor(SignInButton.COLOR_DARK);
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-
 
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
         handler = new DatabaseHandler(this);
         handler.insertModules();
         handler.insertVenues();
-
-
     }
 
     @Override
@@ -96,6 +95,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.println(Log.ERROR,"Yoh","No Connection bra");
     }
 
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -115,34 +117,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     dialog = getDialog(0);
                     dialog.show();
                 }
+                //}
             } else {
                 toast = Toast.makeText(this, "Login Unsuccessful", Toast.LENGTH_LONG);
+                toast.show();
             }
         }
     }
 
-    public void success()
-    {
-        toast = Toast.makeText(context,"Yess Bitch",Toast.LENGTH_LONG);
-        toast.show();
-    }
-
     public void res()
     {
-        toast = Toast.makeText(context,"Yess djdsj",Toast.LENGTH_LONG);
+        toast = Toast.makeText(context,"Signed Out",Toast.LENGTH_LONG);
         toast.show();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Intent intent = getIntent();
-
-        if(intent.getBooleanExtra("SIGN_OUT",false))
-        {
-           // googleApiClient = LabRatConstants.API_CLIENT;
-            //signOut();
-        }
     }
 
     @Override
@@ -169,29 +155,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
         return builder.create();
-    }
-
-
-
-    private void revokeAccess() {
-        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        toast = Toast.makeText(context,"Successfully Signed Out",Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                });
-    }
-
-    public void signOut(MenuItem item) {
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        revokeAccess();
-                    }
-                });
     }
 
 

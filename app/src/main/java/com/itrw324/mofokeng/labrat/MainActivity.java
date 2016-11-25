@@ -1,5 +1,6 @@
 package com.itrw324.mofokeng.labrat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,10 +17,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
 import com.itrw324.mofokeng.labrat.UIFragments.ClassFragment;
 import com.itrw324.mofokeng.labrat.UIFragments.DevBlogFragment;
 import com.itrw324.mofokeng.labrat.UIFragments.LabFragment;
@@ -34,6 +42,8 @@ public class MainActivity extends AppCompatActivity
         ClassFragment.OnFragmentInteractionListener{
 
     private FragmentManager fragManager;
+    public static String SIGN_OUT_INTENT = "sign_out";
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         fragTransaction.add(R.id.fragContainer,new ScheduleFragment()).commit();
 
         setTitle(R.string.title_schdule);
+        context = this;
     }
 
     @Override
@@ -138,7 +149,7 @@ public class MainActivity extends AppCompatActivity
                 setTitle(R.string.title_devblog);
             }break;
             case R.id.nav_signout:{
-                //signOut();
+                signOut();
             }break;
             case R.id.nav_classes:{
                 classFragment = new ClassFragment();
@@ -150,10 +161,42 @@ public class MainActivity extends AppCompatActivity
         fragTransaction.commit();
     }
 
+    private GoogleApiClient apiClient;
     private void signOut() {
-        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-        intent.putExtra("SIGN_OUT",true);
-        startActivity(intent);
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        apiClient = new GoogleApiClient.Builder(MainActivity.this).enableAutoManage(MainActivity.this,new Something()).addApi(Auth.GOOGLE_SIGN_IN_API,gso).build();
+
+        Intent i = Auth.GoogleSignInApi.getSignInIntent(apiClient);
+        startActivityForResult(i, LabRatConstants.SUCCESSFUL_REQUEST);
+    }
+
+    private void revokeAccess() {
+        Auth.GoogleSignInApi.revokeAccess(apiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Toast.makeText(context,"Successfully Signed Out",Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==LabRatConstants.SUCCESSFUL_REQUEST)
+            Auth.GoogleSignInApi.signOut(apiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            revokeAccess();
+                        }
+                    });
     }
 
     @Override
@@ -162,5 +205,15 @@ public class MainActivity extends AppCompatActivity
 
     public void signOut(MenuItem item) {
 
+    }
+
+    class Something implements GoogleApiClient.OnConnectionFailedListener
+    {
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+
+
+        }
     }
 }

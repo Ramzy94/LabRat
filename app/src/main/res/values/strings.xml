@@ -53,8 +53,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 
-    <!--Snackbar Strings-->
+    <!--Snackbar/Toast Strings-->
     <string name="class_added">Class Added to Schedule</string>
+    <string name="class_removed">Class Removed From Schedule</string>
 
     <!--Side Drawer Strings-->
     <string name="menuItemVenue">Venues</string>

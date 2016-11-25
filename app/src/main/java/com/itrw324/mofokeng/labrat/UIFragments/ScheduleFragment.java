@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.itrw324.mofokeng.labrat.NonActivityClasses.Class;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
@@ -62,16 +63,9 @@ public class ScheduleFragment extends Fragment {
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Schedule Notification");
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK",null);
-                builder.setMessage("Removed From Schedule, PLease Refresh");
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
                 DatabaseHandler handler = new DatabaseHandler(getActivity());
                 handler.deleteSchedule(theSchedule);
+                Toast.makeText(getActivity(), R.string.class_removed, Toast.LENGTH_SHORT).show();
                 updateUI();
             }
         });

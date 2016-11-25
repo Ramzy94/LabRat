@@ -8,7 +8,7 @@ public class Class {
 
     private String classID;
     private int class_Period;
-    private String classTime;
+    private String class_Time;
     private String day;
     private String venueID;
     private String module_Code;
@@ -22,7 +22,7 @@ public class Class {
         this.setClass_Period(class_Period);
         this.setVenueID(venueID);
         this.setModule_Code(module_Code);
-        this.setClassTime(this.getClass_Period());
+        this.setClass_Time(this.getClass_Period());
         this.setDay(day);
     }
 
@@ -42,19 +42,25 @@ public class Class {
         this.classID = classID;
     }
 
-    public String getClassTime() {
-        return classTime;
+    public String getClass_Time() {
+        return class_Time;
     }
 
-    public void setClassTime(int Period) {
+    public void setClass_Time(int Period) {
         switch (Period)
         {
-            case 0:classTime="08:00";break;
-            case 1:classTime="09:30";break;
-            case 2:classTime="11:00";break;
-            case 3:classTime="12:30";break;
-            case 4:classTime="14:00";break;
-            case 5:classTime="15:30";break;
+            case 0:
+                class_Time ="08:00";break;
+            case 1:
+                class_Time ="09:30";break;
+            case 2:
+                class_Time ="11:00";break;
+            case 3:
+                class_Time ="12:30";break;
+            case 4:
+                class_Time ="14:00";break;
+            case 5:
+                class_Time ="15:30";break;
         }
     }
 
@@ -64,7 +70,7 @@ public class Class {
 
     public void setClass_Period(int class_Period) {
         this.class_Period = class_Period;
-        this.setClassTime(this.getClass_Period());
+        this.setClass_Time(this.getClass_Period());
     }
 
     public int getDaySpinnerValue()

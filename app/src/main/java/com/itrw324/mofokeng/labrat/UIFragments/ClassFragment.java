@@ -117,7 +117,6 @@ public class ClassFragment extends Fragment {
 
         linearLayout =(LinearLayout) view.findViewById(R.id.classLayout);
         updateUI();
-        initDialog();
 
         return view;
     }
@@ -127,7 +126,7 @@ public class ClassFragment extends Fragment {
         ((TextView) card.findViewById(R.id.txtDay)).setText(uniClass.getDay());
         ((TextView) card.findViewById(R.id.txtModcode)).setText(uniClass.getModule_Code());
         ((TextView) card.findViewById(R.id.txtVenue)).setText(uniClass.getVenueID());
-        ((TextView) card.findViewById(R.id.txtPeriod)).setText(uniClass.getClassTime());
+        ((TextView) card.findViewById(R.id.txtPeriod)).setText(uniClass.getClass_Time());
 
         card.setOnClickListener(new View.OnClickListener()
         {
@@ -139,19 +138,26 @@ public class ClassFragment extends Fragment {
                 snackbar.show();
 
                 DatabaseHandler handler = new DatabaseHandler(getActivity());
-                handler.addToSchedule(uniClass, LabRatConstants.LOGGED_IN);
+                handler.addToSchedule(uniClass, LabRatConstants.LOGGED_IN.getAccount());
             }
         });
 
         card.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                final DatabaseHandler handler = new DatabaseHandler(getActivity());
+
+                initDialog();
                 builder.setTitle(R.string.edit_class);
                 modSpinner.setEnabled(false);
-                modSpinner.setSelection(uniClass.getDaySpinnerValue());
+                for(int i=0;i<modSpinner.getCount();i++)
+                {
+                    if(uniClass.getModule_Code().equalsIgnoreCase(modSpinner.getItemAtPosition(i).toString()))
+                        modSpinner.setSelection(i);
+                }
+                daySpinner.setSelection(uniClass.getDaySpinnerValue());
                 periodSpinner.setSelection(uniClass.getClass_Period());
-                daySpinner.setSelection(Integer.parseInt(new DatabaseHandler(getActivity()).getVenueID(uniClass))+1);
-
+                venueSpinner.setSelection(Integer.parseInt(handler.getVenueID(uniClass))-1);
                 builder.setPositiveButton(R.string.btnProceed, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -161,7 +167,7 @@ public class ClassFragment extends Fragment {
                         String day = daySpinner.getSelectedItem().toString();
 
                         uniClass.setDay(day);
-                        uniClass.setClassTime(period);
+                        uniClass.setClass_Time(period);
                         uniClass.setVenueID(venue);
 
                         DatabaseHandler handler = new DatabaseHandler(getActivity());
@@ -171,7 +177,13 @@ public class ClassFragment extends Fragment {
                     }
                 });
 
-                //builder.setNegativeButton(R.string.delete_class,new )
+                builder.setNegativeButton(R.string.delete_class, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        handler.deleteClass(uniClass);
+                        updateUI();
+                    }
+                });
 
                 builder.create().show();
                 return true;
@@ -202,6 +214,7 @@ public class ClassFragment extends Fragment {
     {
         @Override
         public void onClick(View view) {
+            initDialog();
             AlertDialog dialog = addClassDialog();
             dialog.show();
         }

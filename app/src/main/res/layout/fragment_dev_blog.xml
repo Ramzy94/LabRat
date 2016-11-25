@@ -1,13 +1,369 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.itrw324.mofokeng.labrat.UIFragments.DevBlogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/blogLayout">
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_android_dev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/abdroid_developers" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_android_developers">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_android_developers"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_android_developers"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_stack_overflow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/stack_overflow" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_stack_overflow">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_stack_overflow"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_android_stack_overflow"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_android_studio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/andriod_studio" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_android_studio">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_android_studio"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_android_studio"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_sqlite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/sqlite" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_sqlite">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_sqlite"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_sqlite"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_git"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/git_logo" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_git">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_git"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_git"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_github"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/github" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_github">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_github"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_github"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_icon8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/icons8" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_incons8">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_icons8"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_icons8"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

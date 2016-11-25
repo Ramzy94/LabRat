@@ -1,14 +1,33 @@
 package com.itrw324.mofokeng.labrat.UIFragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.util.ArraySet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Space;
+import android.widget.TextView;
 
 import com.itrw324.mofokeng.labrat.R;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Stack;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +52,7 @@ public class DevBlogFragment extends Fragment {
     public DevBlogFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -65,7 +85,96 @@ public class DevBlogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dev_blog, container, false);
+        View v =  inflater.inflate(R.layout.fragment_dev_blog, container, false);
+
+        CardView cards[] = new CardView[7];
+        cards[0] = (CardView)v.findViewById(R.id.card_android_dev);
+        cards[1] = (CardView)v.findViewById(R.id.card_stack_overflow);
+        cards[2] = (CardView)v.findViewById(R.id.card_android_studio);
+        cards[3] = (CardView)v.findViewById(R.id.card_sqlite);
+        cards[4] = (CardView)v.findViewById(R.id.card_git);
+        cards[5] = (CardView)v.findViewById(R.id.card_github);
+        cards[6] = (CardView)v.findViewById(R.id.card_icon8);
+
+/*        Uri uris[] = new Uri[7];
+        uris[0] = Uri.parse(getString(R.string.link_android_developers));
+        uris[0] = Uri.parse(getString(R.string.link_stack_overflow));
+        uris[0] = Uri.parse(getString(R.string.link_android_studio));
+        uris[0] = Uri.parse(getString(R.string.link_sqlite));
+        uris[0] = Uri.parse(getString(R.string.link_git));
+        uris[0] = Uri.parse(getString(R.string.link_github));
+        uris[0] = Uri.parse(getString(R.string.link_icons8));*/
+
+        for(CardView card:cards)
+        {
+            switch (card.getId())
+            {
+                case R.id.card_android_dev:card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(getString(R.string.link_android_developers));
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(intent);
+                    }
+                });break;
+
+                case R.id.card_stack_overflow:card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(getString(R.string.link_stack_overflow));
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(intent);
+                    }
+                });break;
+
+                case R.id.card_android_studio:card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(getString(R.string.link_android_studio));
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(intent);
+                    }
+                });break;
+
+                case R.id.card_sqlite:card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(getString(R.string.link_sqlite));
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(intent);
+                    }
+                });break;
+
+                case R.id.card_git:card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(getString(R.string.link_git));
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(intent);
+                    }
+                });break;
+
+                case R.id.card_github:card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(getString(R.string.link_github));
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(intent);
+                    }
+                });break;
+
+                case R.id.card_icon8:card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(getString(R.string.link_icons8));
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(intent);
+                    }
+                });break;
+            }
+        }
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

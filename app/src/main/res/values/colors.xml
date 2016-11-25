@@ -8,4 +8,13 @@
     <color name="black_overlay">#66000000</color>
     <color name="whitesmoke">#eeeeee</color>
 
+
+    <!--DevBlog Colours-->
+    <color name="color_android_studio">#92c755</color>
+    <color name="color_android_developers">#445b66</color>
+    <color name="color_stack_overflow">#f48024</color>
+    <color name="color_sqlite">#0f80cc</color>
+    <color name="color_incons8">#32c24c</color>
+    <color name="color_git">#f34f29</color>
+    <color name="color_github">#171515</color>
 </resources>

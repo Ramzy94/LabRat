@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
+
     public void onClick(View view) {
         if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
             this.signInIntent();
@@ -107,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 acct = result.getSignInAccount();
 
                 if (handler.alreadySignedUp(acct.getEmail())) {
-                    LabRatConstants.LOGGED_IN = acct;
+                    //LabRatConstants.LOGGED_IN = acct;
                     Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);
                 } else {
@@ -171,6 +172,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
+
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
@@ -207,10 +209,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             else
                 account.setRole(UserAccount.STUDENT);
 
-            LabRatConstants.LOGGED_IN = account.getAccount();
+            LabRatConstants.LOGGED_IN = account;
             LabRatConstants.API_CLIENT = googleApiClient;
 
-
+            //handler.insertUser(account);
 
             Intent intent = new Intent(context, MainActivity.class);
             startActivity(intent);

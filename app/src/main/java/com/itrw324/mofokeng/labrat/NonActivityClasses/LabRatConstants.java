@@ -11,7 +11,7 @@ public class LabRatConstants {
 
     public static final String PACKAGE_NAME = "com\\.itrw324\\.mofokeng\\.labrat";
     public static final int SUCCESSFUL_REQUEST = 9001;
-    public static GoogleSignInAccount LOGGED_IN = null;
+    public static UserAccount LOGGED_IN = null;
     public static GoogleApiClient API_CLIENT;
 
     public final static class Permissions

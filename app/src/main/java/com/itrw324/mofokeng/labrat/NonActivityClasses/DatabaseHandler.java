@@ -61,7 +61,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor c = database.rawQuery(sql,whereClause);
         c.moveToFirst();
 
-        //Log.println(Log.DEBUG,"Yeah","There are "+c.getCount()+" Venues in this Table");
         return c.getString(0);
     }
 
@@ -136,10 +135,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.execSQL(sql);
     }
 
+    public void deleteSchedule(Class campusClass)
+    {
+        String sql = "DELETE FROM "+ Database.TableSchedule.TABLE_NAME + " WHERE "+Database.TableSchedule.COLOUMN_CLASS_ID+" = "+campusClass.getClassID();
+        database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+    public void deleteClass(Class campusClas)
+    {
+        deleteSchedule(campusClas);
+        String sql = "DELETE FROM "+ Database.TableClass.TABLE_NAME + " WHERE "+Database.TableClass.COLOUMN_CLASS_ID+" = "+campusClas.getClassID();
+        database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
     public void updateClass(Class campusClass)
     {
         String venueID = getVenueID(campusClass);
-        int vID = Integer.parseInt(venueID);
 
         String sql = "UPDATE "+Database.TableClass.TABLE_NAME + " SET "+Database.TableClass.COLOUMN_CLASS_DAY+"=\""+campusClass.getDay()+"\", "+Database.TableClass.COLOUMN_CLASS_PERIOD+"="+campusClass.getClass_Period()+", "+Database.TableClass.COLOUMN_VENUEID+"="+venueID+" WHERE "+Database.TableClass.COLOUMN_CLASS_ID+" = "+campusClass.getClassID()+";";
         database = getWritableDatabase();

@@ -34,7 +34,7 @@ public class LabFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private int free[][];
-    private GridView gridView;
+    private ImageAdapter iAdapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -78,9 +78,8 @@ public class LabFragment extends Fragment {
     public void assignFreePCs()
     {
         rndm = new Random();
-        mThumbIds = new Integer[22];
+        mThumbIds = new Integer[24];
 
-        //int num = rndm.nextInt(2);
         for(int i = 0;i<mThumbIds.length;i++) {
             int num = rndm.nextInt(2);
             if (num == 0)
@@ -108,8 +107,9 @@ public class LabFragment extends Fragment {
         Spinner venueSpinner = (Spinner)view.findViewById(R.id.labSpinner);
         venueSpinner.setAdapter(adapter);
 
+        iAdapter = new ImageAdapter(getActivity());
         GridView gridview = (GridView) view.findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(getActivity()));
+        gridview.setAdapter(iAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -122,7 +122,7 @@ public class LabFragment extends Fragment {
         venueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                assignFreePCs();
+                //iAdapter.
             }
 
             @Override
@@ -195,7 +195,8 @@ public class LabFragment extends Fragment {
         }
 
         // create a new ImageView for each item referenced by the Adapter
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
             ImageView imageView;
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes

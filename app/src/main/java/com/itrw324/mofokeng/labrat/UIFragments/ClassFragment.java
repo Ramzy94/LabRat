@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.itrw324.mofokeng.labrat.NonActivityClasses.Class;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
@@ -115,6 +116,9 @@ public class ClassFragment extends Fragment {
         FloatingActionButton classFab = (FloatingActionButton)view.findViewById(R.id.classFab);
         classFab.setOnClickListener(new FabHandler());
 
+        if (LabRatConstants.LOGGED_IN.isAStudent())
+            classFab.setVisibility(View.GONE);
+
         linearLayout =(LinearLayout) view.findViewById(R.id.classLayout);
         updateUI();
 
@@ -167,7 +171,7 @@ public class ClassFragment extends Fragment {
                         String day = daySpinner.getSelectedItem().toString();
 
                         uniClass.setDay(day);
-                        uniClass.setClass_Time(period);
+                        uniClass.setClass_Period(period);
                         uniClass.setVenueID(venue);
 
                         DatabaseHandler handler = new DatabaseHandler(getActivity());
@@ -190,6 +194,8 @@ public class ClassFragment extends Fragment {
             }
         });
 
+        if(LabRatConstants.LOGGED_IN.isAStudent())
+            card.setLongClickable(false);
         return card;
     }
 
@@ -234,7 +240,13 @@ public class ClassFragment extends Fragment {
 
             Class uniClass = new Class(period,venue,module,day);
 
-            handler.insertClass(uniClass);
+            try {
+                handler.insertClass(uniClass);
+            }
+            catch (IllegalArgumentException ex)
+            {
+                Toast.makeText(getActivity(),ex.getMessage(),Toast.LENGTH_SHORT).show();
+            }
             updateUI();
         }
     }

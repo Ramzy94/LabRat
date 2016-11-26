@@ -27,6 +27,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void insertClass(Class universityClass)
     {
+        Class[]classes = getClassList();
+
+        for(Class theClass:classes)
+        {
+            if((theClass.getDay().equalsIgnoreCase(universityClass.getDay())&&(theClass.getVenueID().equalsIgnoreCase(universityClass.getVenueID()))&&(theClass.getClass_Period()==universityClass.getClass_Period())))
+                throw new IllegalArgumentException("There is already a class in that slot");
+        }
+
         ContentValues values = new ContentValues();
         values.put(Database.TableClass.COLOUMN_CLASS_PERIOD,universityClass.getClass_Period());
         values.put(Database.TableClass.COLOUMN_CLASS_DAY,universityClass.getDay());
@@ -37,7 +45,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.insert(Database.TableClass.TABLE_NAME,null,values);
     }
 
-
     public void insertUser(UserAccount account) {
         ContentValues values = new ContentValues();
         values.put(Database.TableUser.COLOUMN_USER_EMAIL, account.getAccount().getEmail());
@@ -46,7 +53,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Database.TableUser.COLOUMN_ROLE, account.getRole());
 
         database = this.getWritableDatabase();
-
         database.insert(Database.TableUser.TABLE_NAME, null, values);
     }
 
@@ -63,8 +69,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return c.getString(0);
     }
-
-
 
     public String getVenueName(int venueID)
     {
@@ -99,6 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             results[i] = c.getString(1);
             c.moveToNext();
         }
+        c.close();
         return results;
     }
 
@@ -130,22 +135,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void deleteSchedule(Schedule schedule)
     {
-        String sql = "DELETE FROM "+ Database.TableSchedule.TABLE_NAME + " WHERE "+Database.TableSchedule.COLOUMN_SCHEDULEID+" = "+schedule.getClassID();
+        String sql = "DELETE FROM "+ Database.TableSchedule.TABLE_NAME + " WHERE "+Database.TableSchedule.COLOUMN_SCHEDULEID+" = "+schedule.getScheduleID();
         database = getWritableDatabase();
         database.execSQL(sql);
     }
 
-    public void deleteSchedule(Class campusClass)
+    private void deleteSchedule(Class campusClass)
     {
         String sql = "DELETE FROM "+ Database.TableSchedule.TABLE_NAME + " WHERE "+Database.TableSchedule.COLOUMN_CLASS_ID+" = "+campusClass.getClassID();
         database = getWritableDatabase();
         database.execSQL(sql);
     }
 
-    public void deleteClass(Class campusClas)
+    public void deleteClass(Class campusClass)
     {
-        deleteSchedule(campusClas);
-        String sql = "DELETE FROM "+ Database.TableClass.TABLE_NAME + " WHERE "+Database.TableClass.COLOUMN_CLASS_ID+" = "+campusClas.getClassID();
+        deleteSchedule(campusClass);
+        String sql = "DELETE FROM "+ Database.TableClass.TABLE_NAME + " WHERE "+Database.TableClass.COLOUMN_CLASS_ID+" = "+campusClass.getClassID();
         database = getWritableDatabase();
         database.execSQL(sql);
     }
@@ -154,7 +159,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         String venueID = getVenueID(campusClass);
 
-        String sql = "UPDATE "+Database.TableClass.TABLE_NAME + " SET "+Database.TableClass.COLOUMN_CLASS_DAY+"=\""+campusClass.getDay()+"\", "+Database.TableClass.COLOUMN_CLASS_PERIOD+"="+campusClass.getClass_Period()+", "+Database.TableClass.COLOUMN_VENUEID+"="+venueID+" WHERE "+Database.TableClass.COLOUMN_CLASS_ID+" = "+campusClass.getClassID()+";";
+        String sql = "UPDATE "+Database.TableClass.TABLE_NAME + " SET "+Database.TableClass.COLOUMN_CLASS_DAY+"=\""+campusClass.getDay()+"\", "+Database.TableClass.COLOUMN_CLASS_PERIOD+" = "+campusClass.getClass_Period()+", "+Database.TableClass.COLOUMN_VENUEID+"="+venueID+" WHERE "+Database.TableClass.COLOUMN_CLASS_ID+" = "+campusClass.getClassID()+";";
         database = getWritableDatabase();
 
         database.execSQL(sql);
@@ -182,6 +187,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             c.moveToNext();
         }
+        c.close();
         return schedule;
     }
 
@@ -196,7 +202,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Log.println(Log.DEBUG, "Classes", "There are " + c.getCount() + " Classes in this Table");
 
-
         Log.println(Log.DEBUG, "Yeah", c.getString(0) + "\t" + c.getString(1) + "\t");
 
         String venue = this.getVenueName(Integer.parseInt(c.getString(3)));
@@ -205,6 +210,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         results.setClassID(c.getString(0));
         c.moveToNext();
 
+        c.close();
         return results;
     }
 
@@ -229,6 +235,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             results[i].setClassID(c.getString(0));
             c.moveToNext();
         }
+        c.close();
         return results;
     }
 
@@ -237,14 +244,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(getVenueList().length==0) {
             database = this.getWritableDatabase();
             String venues[] = {"9A-102", "9A-103", "9A-104", "9A-106", "9A-107", "3-103"};
-            String vNames[] = {"Buffel", "Luiperd", "Leeu", "Renoster", "Tavern", "Walvis"};
 
             ContentValues values = new ContentValues();
 
-            for (int i = 0; i < venues.length; i++) {
-                //values.put(Database.TableVenue.COLOUMN_VENUEID,venues[i]);
-                values.put(Database.TableVenue.COLOUMN_VENU_NAME, venues[i]);
-
+            for (String venue:venues) {
+                values.put(Database.TableVenue.COLOUMN_VENU_NAME, venue);
                 database.insert(Database.TableVenue.TABLE_NAME, null, values);
             }
         }
@@ -289,7 +293,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             results[i] = c.getString(0);
             c.moveToNext();
         }
+        c.close();
         return results;
+    }
+
+    public UserAccount getUser(GoogleSignInAccount account)
+    {
+        database = this.getReadableDatabase();
+
+        String[] args = {account.getEmail()};
+
+        String sql = "SELECT * FROM " + Database.TableUser.TABLE_NAME + " WHERE " + Database.TableUser.COLOUMN_USER_EMAIL + " = ?;";
+        Cursor c = database.rawQuery(sql, args);
+        c.moveToFirst();
+
+        String uniNum = c.getString(2);
+        String role = c.getString(3);
+
+        UserAccount acc = new UserAccount(account,uniNum);
+
+        acc.setRole(role);
+        return acc;
     }
 
     public boolean alreadySignedUp(String email) {
@@ -329,12 +353,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
-        database.execSQL("DROP TABLE IF EXISTS"+Database.TableSchedule.TABLE_NAME);
-        database.execSQL("DROP TABLE IF EXISTS"+Database.TableClass.TABLE_NAME);
-        database.execSQL("DROP TABLE IF EXISTS"+Database.TableVenue.TABLE_NAME);
-        database.execSQL("DROP TABLE IF EXISTS"+Database.TableModule.TABLE_NAME);
-        database.execSQL("DROP TABLE IF EXISTS"+Database.TableUser.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+Database.TableSchedule.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+Database.TableClass.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+Database.TableVenue.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+Database.TableModule.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+Database.TableUser.TABLE_NAME);
 
-        onCreate(database);
+        onCreate(sqLiteDatabase);
     }
 }

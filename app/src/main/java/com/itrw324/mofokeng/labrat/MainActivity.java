@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity
         ClassFragment.OnFragmentInteractionListener{
 
     private FragmentManager fragManager;
-    public static String SIGN_OUT_INTENT = "sign_out";
     private Context context;
 
     @Override
@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity
 
     public void setView(int id)
     {
-
         ScheduleFragment scheduleFragment;
         LabFragment labFragment;
         DevBlogFragment devBlogFragment;

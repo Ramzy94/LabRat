@@ -9,6 +9,9 @@ public class UserAccount   {
     public static final int LECTURER = 1;
     public static final int STUDENT = 0;
 
+    public static final String LECTURER_ROLE = "Student";
+    public static final String STUDENT_ROLE = "Student";
+
     //Instance Variables
     private GoogleSignInAccount account;
     private int role;
@@ -17,6 +20,13 @@ public class UserAccount   {
     public UserAccount(GoogleSignInAccount account, String university_Number) {
         setAccount(account);
         setUniversity_Number(university_Number);
+    }
+
+    public boolean isAStudent()
+    {
+        if(this.role==LECTURER)
+            return false;
+        else return true;
     }
 
     public String getUniversity_Number() {
@@ -40,6 +50,13 @@ public class UserAccount   {
             return "Student";
         else
             return "Lecturer";
+    }
+
+    public void setRole(String role) {
+        if (role.equalsIgnoreCase(STUDENT_ROLE))
+            setRole(STUDENT);
+        else
+            setRole(LECTURER);
     }
 
     public void setRole(int role) {

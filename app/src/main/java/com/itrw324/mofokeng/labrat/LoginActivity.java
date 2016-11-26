@@ -74,7 +74,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-
     public void onClick(View view) {
         if (checkSelfPermission(Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
             this.signInIntent();
@@ -95,9 +94,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.println(Log.ERROR,"Yoh","No Connection bra");
     }
 
-
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -110,14 +106,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 acct = result.getSignInAccount();
 
                 if (handler.alreadySignedUp(acct.getEmail())) {
-                    //LabRatConstants.LOGGED_IN = acct;
+                    LabRatConstants.LOGGED_IN = handler.getUser(acct);
                     Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);
                 } else {
                     dialog = getDialog(0);
                     dialog.show();
                 }
-                //}
             } else {
                 toast = Toast.makeText(this, "Login Unsuccessful", Toast.LENGTH_LONG);
                 toast.show();
@@ -173,9 +168,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 account.setRole(UserAccount.STUDENT);
 
             LabRatConstants.LOGGED_IN = account;
-            LabRatConstants.API_CLIENT = googleApiClient;
 
-            //handler.insertUser(account);
+            handler.insertUser(account);
 
             Intent intent = new Intent(context, MainActivity.class);
             startActivity(intent);

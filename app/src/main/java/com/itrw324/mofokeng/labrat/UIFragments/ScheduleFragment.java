@@ -4,12 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,17 +24,17 @@ public class ScheduleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private LinearLayout scheduleLayout;
+    private final String[] TIMES = getResources().getStringArray(R.array.periodArray);
+    private final String[] DAYS = getResources().getStringArray(R.array.daysArray);
 
     public ScheduleFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
         }
     }
 
@@ -49,6 +49,11 @@ public class ScheduleFragment extends Fragment {
             Class nwuClass = handler.getOneClass(schedules[i].getClassID());
 
             scheduleLayout.addView(createCardView(nwuClass,getActivity().getLayoutInflater(),schedules[i]));
+            Space nothing = new Space(getActivity());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 5);
+            nothing.setLayoutParams(params);
+
+            scheduleLayout.addView(nothing);
         }
     }
 

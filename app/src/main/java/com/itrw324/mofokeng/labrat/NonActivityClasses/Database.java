@@ -5,8 +5,7 @@ import android.provider.BaseColumns;
 /**
  * Created by Mofokeng on 05-Nov-16.
  */
-
-public final class Database
+final class Database
 {
     static final String SQL_CREATE_USER = "CREATE TABLE "+TableUser.TABLE_NAME+"( "+TableUser.COLOUMN_USER_EMAIL+" TEXT PRIMARY KEY NOT NULL, "+TableUser.COLOUMN_DISPLAY_NAME+" TEXT NULL, "+TableUser.COLOUMN_UNIVERSITY_NUMBER+" TEXT NULL, "+TableUser.COLOUMN_ROLE+" TEXT NULL );";
     static final String SQL_CREATE_MODULE = "CREATE TABLE "+TableModule.TABLE_NAME+" ( "+TableModule.COLOUMN_MODULE_CODE+" TEXT PRIMARY KEY NOT NULL, "+TableModule.COLOUMN_MODULE_DESCR+" TEXT NULL, "+TableModule.COLOUMN_MODULE_LECTURER+" TEXT NULL );";

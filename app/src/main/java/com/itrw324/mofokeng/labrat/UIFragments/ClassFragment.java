@@ -136,13 +136,19 @@ public class ClassFragment extends Fragment {
         {
             @Override
             public void onClick(View view) {
-                Snackbar snackbar = Snackbar.make(linearLayout,R.string.class_added,Snackbar.LENGTH_SHORT);
-                View sbView = snackbar.getView();
-                sbView.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
-                snackbar.show();
 
                 DatabaseHandler handler = new DatabaseHandler(getActivity());
-                handler.addToSchedule(uniClass, LabRatConstants.LOGGED_IN.getAccount());
+                try {
+                    handler.addToSchedule(uniClass, LabRatConstants.LOGGED_IN.getAccount());
+
+                    Snackbar snackbar = Snackbar.make(linearLayout,R.string.class_added,Snackbar.LENGTH_SHORT);
+                    View sbView = snackbar.getView();
+                    sbView.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
+                    snackbar.show();
+                }
+                catch (IllegalArgumentException ex) {
+                    Toast.makeText(getActivity(),ex.getMessage(),Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -175,8 +181,12 @@ public class ClassFragment extends Fragment {
                         uniClass.setVenueID(venue);
 
                         DatabaseHandler handler = new DatabaseHandler(getActivity());
-                        handler.updateClass(uniClass);
 
+                        try {
+                            handler.updateClass(uniClass);
+                        } catch (IllegalArgumentException e) {
+                            Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
                         updateUI();
                     }
                 });

@@ -1,5 +1,7 @@
 package com.itrw324.mofokeng.labrat.NonActivityClasses;
 
+import java.util.Calendar;
+
 /**
  * Created by Mofokeng on 08-Nov-16.
  */
@@ -73,6 +75,7 @@ public class Class {
         this.setClass_Time(this.getClass_Period());
     }
 
+
     public int getDaySpinnerValue()
     {
         if(getDay().equalsIgnoreCase("Monday"))
@@ -84,6 +87,19 @@ public class Class {
         else if (getDay().equalsIgnoreCase("Thursday"))
             return 3;
         else return 4;
+    }
+
+    int getCalenderDay()
+    {
+        if(getDay().equalsIgnoreCase("Monday"))
+            return Calendar.MONDAY;
+        else if(getDay().equalsIgnoreCase("Tuesday"))
+            return Calendar.TUESDAY;
+        else if (getDay().equalsIgnoreCase("Wednesday"))
+            return Calendar.WEDNESDAY;
+        else if (getDay().equalsIgnoreCase("Thursday"))
+            return Calendar.THURSDAY;
+        else return Calendar.FRIDAY;
     }
 
     public String getVenueID() {

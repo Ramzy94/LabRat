@@ -24,8 +24,6 @@ public class ScheduleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private LinearLayout scheduleLayout;
-    private final String[] TIMES = getResources().getStringArray(R.array.periodArray);
-    private final String[] DAYS = getResources().getStringArray(R.array.daysArray);
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -74,7 +72,6 @@ public class ScheduleFragment extends Fragment {
                 updateUI();
             }
         });
-
         return card;
     }
 
@@ -88,8 +85,6 @@ public class ScheduleFragment extends Fragment {
         updateUI();
         return view;
     }
-
-
 
     @Override
     public void onAttach(Context context) {

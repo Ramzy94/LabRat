@@ -21,8 +21,11 @@
     <!-- FragmentLab Srings-->
     <string name="spinner_select">Select a Venue</string>
 
+    <string name="dialog_already_booked">There is already a class in that slot</string>
 
     <!--Dialog Strings-->
+    <string name="classes_in_venue">Classes Booked for This Venue Today</string>
+    <string name="btnOkay">OK</string>
     <string name="btnProceed">Proceed</string>
     <string name="add_class">Create a Class</string>
     <string name="edit_class">Edit or Delete a Class</string>

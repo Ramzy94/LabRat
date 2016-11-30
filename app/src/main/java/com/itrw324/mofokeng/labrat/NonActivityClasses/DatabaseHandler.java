@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 
 /**
  * Created by Mofokeng on 06-Nov-16.
@@ -25,15 +28,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void insertClass(Class universityClass)
+    private void checkClassExists(Class universityClass)
     {
         Class[]classes = getClassList();
 
         for(Class theClass:classes)
         {
             if((theClass.getDay().equalsIgnoreCase(universityClass.getDay())&&(theClass.getVenueID().equalsIgnoreCase(universityClass.getVenueID()))&&(theClass.getClass_Period()==universityClass.getClass_Period())))
-                throw new IllegalArgumentException("There is already a class in that slot");
+                throw new IllegalArgumentException(theClass.getModule_Code()+" is already Booked for that slot");
         }
+    }
+
+    public void insertClass(Class universityClass)
+    {
+        this.checkClassExists(universityClass);
 
         ContentValues values = new ContentValues();
         values.put(Database.TableClass.COLOUMN_CLASS_PERIOD,universityClass.getClass_Period());
@@ -81,8 +89,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor c = database.rawQuery(sql,whereClause);
         c.moveToFirst();
 
-        Log.println(Log.DEBUG,"Venue","There are "+c.getCount()+" Venues in this List");
         return c.getString(1);
+    }
+
+    public Venue[] getVenueArray()
+    {
+        String sql = "SELECT * FROM "+ Database.TableVenue.TABLE_NAME + ";";
+
+        database = getReadableDatabase();
+        Cursor c = database.rawQuery(sql,null);
+        c.moveToFirst();
+
+        Venue results[] = new Venue[c.getCount()];
+
+        for (int i=0;i<c.getCount();i++)
+        {
+            results[i] = new Venue(c.getString(0),c.getString(1));
+            c.moveToNext();
+        }
+        c.close();
+        return results;
     }
 
     public String[] getVenueList()
@@ -95,11 +121,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String results[] = new String[c.getCount()];
 
-        Log.println(Log.DEBUG,"Venues","There are "+c.getCount()+" Venues in this Table");
-
         for (int i=0;i<c.getCount();i++)
         {
-            Log.println(Log.DEBUG,"Yeah",c.getString(0)+"\t"+c.getString(1)+"\t");
             results[i] = c.getString(1);
             c.moveToNext();
         }
@@ -107,29 +130,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return results;
     }
 
-    public String getClassID(Class campusClass)
+    public ArrayList<Class> getClassesInVenue(String aVenue)
     {
-        String sql = "SELECT "+Database.TableClass.COLOUMN_CLASS_ID+" FROM "+ Database.TableClass.TABLE_NAME + " WHERE "+Database.TableClass.COLOUMN_CLASS_PERIOD+" = ? AND "+Database.TableClass.COLOUMN_CLASS_DAY+" = ? AND "+Database.TableClass.COLOUMN_MODULE_CODE+" = ?;";
+        Venue[] venues = getVenueArray();
+
+        int index = 0;
+        while (index<venues.length)
+        {
+            if(venues[index].getVenueName().equalsIgnoreCase(aVenue))
+                break;
+            index++;
+        }
+
+        String sql = "SELECT * FROM "+ Database.TableClass.TABLE_NAME+ " WHERE "+Database.TableClass.COLOUMN_VENUEID+" = ?;";
+
+        String []args = {venues[index].getVenueID()};
 
         database = getReadableDatabase();
-
-        String whereClause[] = {String.valueOf(campusClass.getClass_Period()),campusClass.getDay(),campusClass.getModule_Code()};
-
-        Cursor c = database.rawQuery(sql,whereClause);
+        Cursor c = database.rawQuery(sql,args);
         c.moveToFirst();
 
-        Log.println(Log.DEBUG,"ClasID","There is "+c.getCount()+" ClassID in this List");
-        return c.getString(0);
+        ArrayList<Class> classes = new ArrayList<>();
+
+
+        Calendar calendar = Calendar.getInstance();
+
+        for (int i=0;i<c.getCount();i++)
+        {
+            String venue = this.getVenueName(Integer.parseInt(c.getString(3)));
+            int classP = Integer.parseInt(c.getString(1));
+            Class aClass = new Class(classP,venue,c.getString(4),c.getString(2));
+            aClass.setClassID(c.getString(0));
+
+            if(aClass.getCalenderDay()==calendar.get(Calendar.DAY_OF_WEEK))
+            {
+                classes.add(aClass);
+            }
+
+            c.moveToNext();
+        }
+        c.close();
+        return classes;
     }
 
     public void addToSchedule(Class universityClass,GoogleSignInAccount user)
     {
+        Schedule[] schedules = getMySchedule(user);
+
+        for(Schedule theSchedule:schedules)
+            if(theSchedule.getClassID()==Integer.parseInt(universityClass.getClassID())&&theSchedule.getUserEmail().equalsIgnoreCase(user.getEmail()))
+                throw new IllegalArgumentException(universityClass.getModule_Code()+" is already in your Schedule for that time and venue");
+
         ContentValues values = new ContentValues();
         values.put(Database.TableSchedule.COLOUMN_CLASS_ID,universityClass.getClassID());
         values.put(Database.TableSchedule.COLOUMN_USER_EMAIL,user.getEmail());
 
         database = this.getWritableDatabase();
-
         database.insert(Database.TableSchedule.TABLE_NAME,null,values);
     }
 
@@ -157,11 +213,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void updateClass(Class campusClass)
     {
+        this.checkClassExists(campusClass);
         String venueID = getVenueID(campusClass);
 
         String sql = "UPDATE "+Database.TableClass.TABLE_NAME + " SET "+Database.TableClass.COLOUMN_CLASS_DAY+"=\""+campusClass.getDay()+"\", "+Database.TableClass.COLOUMN_CLASS_PERIOD+" = "+campusClass.getClass_Period()+", "+Database.TableClass.COLOUMN_VENUEID+"="+venueID+" WHERE "+Database.TableClass.COLOUMN_CLASS_ID+" = "+campusClass.getClassID()+";";
         database = getWritableDatabase();
-
         database.execSQL(sql);
     }
 
@@ -176,11 +232,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Schedule schedule[] = new Schedule[c.getCount()];
 
-        Log.println(Log.DEBUG,"Venues","There are "+c.getCount()+" Classes in my schedule");
 
         for (int i=0;i<c.getCount();i++)
         {
-            Log.println(Log.DEBUG,"Schedule",c.getString(0)+"\t"+c.getString(1)+"\t"+c.getString(2));
             int clID = Integer.parseInt(c.getString(2));
             int schId = Integer.parseInt(c.getString(0));
             schedule[i] = new Schedule(schId,c.getString(1),clID);
@@ -200,10 +254,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         c.moveToFirst();
 
 
-        Log.println(Log.DEBUG, "Classes", "There are " + c.getCount() + " Classes in this Table");
-
-        Log.println(Log.DEBUG, "Yeah", c.getString(0) + "\t" + c.getString(1) + "\t");
-
         String venue = this.getVenueName(Integer.parseInt(c.getString(3)));
         int classP = Integer.parseInt(c.getString(1));
         Class results = new Class(classP, venue, c.getString(4), c.getString(2));
@@ -213,6 +263,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         c.close();
         return results;
     }
+
+    public Class[] searchClasses(String moduleCode)
+    {
+        String sql = "SELECT * FROM "+ Database.TableClass.TABLE_NAME+ " WHERE "+Database.TableClass.COLOUMN_MODULE_CODE+ " = ?";
+        String args[] = {moduleCode};
+
+        database = getReadableDatabase();
+        Cursor c = database.rawQuery(sql,args);
+        c.moveToFirst();
+
+        Class results[] = new Class[c.getCount()];
+
+        for (int i=0;i<c.getCount();i++)
+        {
+            String venue = this.getVenueName(Integer.parseInt(c.getString(3)));
+            int classP = Integer.parseInt(c.getString(1));
+            results[i] = new Class(classP,venue,c.getString(4),c.getString(2));
+            results[i].setClassID(c.getString(0));
+            c.moveToNext();
+        }
+        c.close();
+        return results;
+    }
+
 
     public Class[] getClassList()
     {
@@ -224,11 +298,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Class results[] = new Class[c.getCount()];
 
-        Log.println(Log.DEBUG,"Classes","There are "+c.getCount()+" Classes in this Table");
 
         for (int i=0;i<c.getCount();i++)
         {
-            Log.println(Log.DEBUG,"Yeah",c.getString(0)+"\t"+c.getString(1)+"\t");
             String venue = this.getVenueName(Integer.parseInt(c.getString(3)));
             int classP = Integer.parseInt(c.getString(1));
             results[i] = new Class(classP,venue,c.getString(4),c.getString(2));
@@ -285,11 +357,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String results[] = new String[c.getCount()];
 
-        Log.println(Log.DEBUG,"Yeah","There are "+c.getCount()+" Modules in this Table");
-
         for (int i=0;i<c.getCount();i++)
         {
-            Log.println(Log.DEBUG,"Yeah",c.getString(0)+"\t"+c.getString(1)+"\t"+c.getString(2));
             results[i] = c.getString(0);
             c.moveToNext();
         }
@@ -326,18 +395,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor c = database.rawQuery(sql, args);
         c.moveToFirst();
 
-        Log.println(Log.DEBUG, "Yeah", "ABCDEFGHIJKLMNOPQRSTUVWXYX" + c.getCount());
-
         if (c.getCount() == 0) {
             return false;
         }
 
-        if (c.getString(0).equalsIgnoreCase(email)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return c.getString(0).equalsIgnoreCase(email);
+
     }
 
     @Override
@@ -347,7 +410,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.execSQL(Database.SQL_CREATE_VENUE);
         database.execSQL(Database.SQL_CREATE_CLASS);
         database.execSQL(Database.SQL_CREATE_SCHEDULE);
-
     }
 
     @Override

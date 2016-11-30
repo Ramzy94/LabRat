@@ -163,7 +163,6 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient apiClient;
     private void signOut() {
 
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         apiClient = new GoogleApiClient.Builder(MainActivity.this).enableAutoManage(MainActivity.this,new Something()).addApi(Auth.GOOGLE_SIGN_IN_API,gso).build();
 
@@ -200,10 +199,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-    }
-
-    public void signOut(MenuItem item) {
-
     }
 
     class Something implements GoogleApiClient.OnConnectionFailedListener

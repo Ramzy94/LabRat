@@ -88,7 +88,7 @@ public class LabFragment extends Fragment {
                 else
                     imageAdapter = new ImageAdapter(getActivity());
 
-                venueSpinner.setAdapter(imageAdapter);
+                gridview.setAdapter(imageAdapter);
             }
 
             @Override

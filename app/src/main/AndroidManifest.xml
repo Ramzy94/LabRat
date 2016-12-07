@@ -3,6 +3,7 @@
     package="com.itrw324.mofokeng.labrat">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"

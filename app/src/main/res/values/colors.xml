@@ -3,7 +3,7 @@
     <color name="colorPrimary">#333</color>
     <color name="colorPrimaryDark">#444</color>
     <color name="colorAccent">#1e88e5</color>
-    <color name="starWhite">#FFFFFF</color>
+    <color name="starWhite">#ffffff</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="whitesmoke">#eeeeee</color>
@@ -12,9 +12,18 @@
     <!--DevBlog Colours-->
     <color name="color_android_studio">#92c755</color>
     <color name="color_android_developers">#445b66</color>
+    <color name="color_google_dvelopers">#00bdd6</color>
+    <color name="color_android_hive">#5b4a42</color>
     <color name="color_stack_overflow">#f48024</color>
     <color name="color_sqlite">#0f80cc</color>
     <color name="color_incons8">#32c24c</color>
     <color name="color_git">#f34f29</color>
     <color name="color_github">#171515</color>
+
+    <!--Blues Nigger, Blues-->
+    <color name="blue400">#42A5F5</color>
+    <color name="blue500">#2196F3</color>
+    <color name="blue700">#1976D2</color>
+    <color name="blue800">#1565C0</color>
+    <color name="blue900">#0D47A1</color>
 </resources>

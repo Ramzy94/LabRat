@@ -23,7 +23,7 @@
         <LinearLayout
             android:layout_weight="4"
             android:layout_width="0dp"
-            android:background="@color/starWhite"
+            android:background="@color/whitesmoke"
             android:orientation="horizontal"
             android:layout_height="match_parent">
             <LinearLayout
@@ -34,20 +34,24 @@
                     android:layout_width="wrap_content"
                     android:id="@+id/txtModcode"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
                     android:text="Module Code"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
                     android:id="@+id/txtDay"
                     android:text="Day"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
                     android:id="@+id/txtPeriod"
                     android:text="Class Time"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
                     android:id="@+id/txtVenue"
                     android:text="Venue"/>
             </LinearLayout>

@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:hint="@string/university_Num" />
 
+
     <CheckBox
         android:layout_width="180dp"
         android:id="@+id/chkLecturer"
         android:layout_height="wrap_content"
         android:text="@string/lecturer"/>
-
 </LinearLayout>

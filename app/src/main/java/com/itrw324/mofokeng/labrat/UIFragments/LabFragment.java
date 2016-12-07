@@ -1,7 +1,6 @@
 package com.itrw324.mofokeng.labrat.UIFragments;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,11 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,29 +21,21 @@ import android.widget.Toast;
 
 import com.itrw324.mofokeng.labrat.NonActivityClasses.Class;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
+import com.itrw324.mofokeng.labrat.NonActivityClasses.ImageAdapter;
 import com.itrw324.mofokeng.labrat.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 public class LabFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private int free[][];
     private Spinner venueSpinner;
-
-    private String mParam1;
-    private String mParam2;
-    private Random rndm;
-
+    private ImageAdapter imageAdapter;
+    private GridView gridview;
     private OnFragmentInteractionListener mListener;
-    private Integer mThumbIds[];
 
     public LabFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +44,9 @@ public class LabFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_lab, container, false);
 
         String venues[] = new DatabaseHandler(getActivity()).getVenueList();
@@ -84,9 +69,8 @@ public class LabFragment extends Fragment {
         venueSpinner = (Spinner)view.findViewById(R.id.labSpinner);
         venueSpinner.setAdapter(adapter);
 
-        GridView gridview = (GridView) view.findViewById(R.id.gridview);
-
-
+        gridview = (GridView) view.findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(getActivity()));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -98,7 +82,13 @@ public class LabFragment extends Fragment {
         venueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //iAdapter.
+                DatabaseHandler handler = new DatabaseHandler(getActivity());
+                if (handler.venueHasClass(venueSpinner.getSelectedItem().toString()))
+                    imageAdapter = new ImageAdapter(getActivity(),ImageAdapter.VEUNUE_IS_OCCUPIED);
+                else
+                    imageAdapter = new ImageAdapter(getActivity());
+
+                venueSpinner.setAdapter(imageAdapter);
             }
 
             @Override
@@ -106,7 +96,6 @@ public class LabFragment extends Fragment {
 
             }
         });
-
         return view;
     }
 
@@ -143,12 +132,6 @@ public class LabFragment extends Fragment {
         builder.create().show();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -167,6 +150,8 @@ public class LabFragment extends Fragment {
         mListener = null;
     }
 
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -178,9 +163,6 @@ public class LabFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
 }

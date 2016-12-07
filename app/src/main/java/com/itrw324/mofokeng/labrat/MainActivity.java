@@ -12,6 +12,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+//import android.support.v7.app.ActionBar;
+import android.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,10 +42,11 @@ public class MainActivity extends AppCompatActivity
         ScheduleFragment.OnFragmentInteractionListener,
         DevBlogFragment.OnFragmentInteractionListener,
         LabFragment.OnFragmentInteractionListener,
-        ClassFragment.OnFragmentInteractionListener{
+        ClassFragment.OnFragmentInteractionListener {
 
     private FragmentManager fragManager;
     private Context context;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +70,12 @@ public class MainActivity extends AppCompatActivity
 
         fragManager = getSupportFragmentManager();
         FragmentTransaction fragTransaction = fragManager.beginTransaction();
-        fragTransaction.add(R.id.fragContainer,new ScheduleFragment()).commit();
+        fragTransaction.add(R.id.fragContainer, new ScheduleFragment()).commit();
 
         setTitle(R.string.title_schdule);
         context = this;
+
+        actionBar = getActionBar();
     }
 
     @Override
@@ -118,8 +123,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void setView(int id)
-    {
+    public void setView(int id) {
         ScheduleFragment scheduleFragment;
         LabFragment labFragment;
         DevBlogFragment devBlogFragment;
@@ -127,38 +131,44 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fragTransaction = fragManager.beginTransaction();
 
-        switch (id)
-        {
-            case R.id.nav_schedule:{
+        switch (id) {
+            case R.id.nav_schedule: {
                 scheduleFragment = new ScheduleFragment();
-                fragTransaction.replace(R.id.fragContainer,scheduleFragment);
+                fragTransaction.replace(R.id.fragContainer, scheduleFragment);
                 fragTransaction.addToBackStack(null);
                 setTitle(R.string.title_schdule);
-            }break;
-            case R.id.nav_venues:{
+            }
+            break;
+            case R.id.nav_venues: {
                 labFragment = new LabFragment();
-                fragTransaction.replace(R.id.fragContainer,labFragment);
+                fragTransaction.replace(R.id.fragContainer, labFragment);
                 fragTransaction.addToBackStack(null);
                 setTitle(R.string.title_venues);
-            }break;
-            case R.id.nav_devBlog:{
+            }
+            break;
+            case R.id.nav_devBlog: {
                 devBlogFragment = new DevBlogFragment();
-                fragTransaction.replace(R.id.fragContainer,devBlogFragment);
+                fragTransaction.replace(R.id.fragContainer, devBlogFragment);
                 fragTransaction.addToBackStack(null);
                 setTitle(R.string.title_devblog);
-            }break;
-            case R.id.nav_signout:{
+            }
+            break;
+            case R.id.nav_signout: {
                 signOut();
-            }break;
-            case R.id.nav_classes:{
+            }
+            break;
+            case R.id.nav_classes: {
                 classFragment = new ClassFragment();
-                fragTransaction.replace(R.id.fragContainer,classFragment);
+                fragTransaction.replace(R.id.fragContainer, classFragment);
                 fragTransaction.addToBackStack(null);
                 setTitle(R.string.title_classes);
-            }break;
+            }
+            break;
         }
         fragTransaction.commit();
     }
+
+
 
     private GoogleApiClient apiClient;
     private void signOut() {
@@ -175,7 +185,7 @@ public class MainActivity extends AppCompatActivity
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        Toast.makeText(context,"Successfully Signed Out",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,R.string.signed_out,Toast.LENGTH_LONG).show();
 
                         Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                         startActivity(intent);
@@ -205,8 +215,6 @@ public class MainActivity extends AppCompatActivity
     {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-
 
         }
     }

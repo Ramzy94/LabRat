@@ -114,17 +114,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     dialog.show();
                 }
             } else {
-                toast = Toast.makeText(this, "Login Unsuccessful", Toast.LENGTH_LONG);
+                toast = Toast.makeText(this, R.string.failed_signin, Toast.LENGTH_LONG);
                 toast.show();
             }
         }
     }
 
-    public void res()
-    {
-        toast = Toast.makeText(context,"Signed Out",Toast.LENGTH_LONG);
-        toast.show();
-    }
 
     @Override
     protected void onPause() {

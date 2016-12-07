@@ -10,6 +10,7 @@
     <string name="university_Num">University Number</string>
     <string name="lecturer">I am a lecturer</string>
     <string name="email">email address</string>
+    <string name="search_title">search</string>
 
     <!-- Title Bar Text-->
     <string name="title_login">Labrat Login</string>
@@ -59,6 +60,8 @@
     <!--Snackbar/Toast Strings-->
     <string name="class_added">Class Added to Schedule</string>
     <string name="class_removed">Class Removed From Schedule</string>
+    <string name="signed_out">Successfully Signed Out</string>
+    <string name="failed_signin">Login Unsuccessful</string>
 
     <!--Side Drawer Strings-->
     <string name="menuItemVenue">Venues</string>
@@ -73,6 +76,8 @@
 
     <!--DevBlog Titles-->
     <string name="devblog_title_android_developers">Android Developers</string>
+    <string name="devblog_title_google_developers">Google Developers</string>
+    <string name="devblog_title_android_hive">Android Hive</string>
     <string name="devblog_title_stack_overflow">Stack Overflow</string>
     <string name="devblog_title_android_studio">Android Studio</string>
     <string name="devblog_title_sqlite">SQLite</string>
@@ -81,7 +86,9 @@
     <string name="devblog_title_icons8">Icons8</string>
 
     <!-- DevBlog Articles-->
-    <string name="devblog_article_android_developers">Android Developers is the official site for all thing (development related) android. The site provides everything form Reference documentation to API guides that prove invaluable to newbie Android Developers. The youtube channel also provides even more video resources to aid developers in inplementing and understanding certain android development concepts</string>
+    <string name="devblog_article_android_developers">Android Developers is the official site for all thing (development related) android. The site provides everything form Reference documentation to API guides that prove invaluable to newbie Android Developers. The Youtube channel also provides even more video resources to aid developers in implementing and understanding certain android development concepts</string>
+    <string name="devblog_article_google_developers">Google Developers (much like Android developers) is the go to resource for all of Google\'s services and gives developers handy examples and sample code as well as great Youtube resource videos. This resource came in handy fro the implementation of the Google Sign in</string>
+    <string name="devblog_article_android_hive">This resource was especially handy for some things that were not made clear enough for novice  Android developers on the Google and Android Developers websites. it is packed with many tutorials with thorough explanations</string>
     <string name="devblog_article_android_stack_overflow">Not many programmers (if any) can say they can live without going through stack overflow. If you have a programming question, its probably already been answered on Stack Overflow. very useful for quick answers to things that I felt weren\'t clearly highlighted in Android Developers</string>
     <string name="devblog_article_android_studio">The de facto standard when it comes Android development. This IDE has a multitude of features tha could take an app alone to go through. Some of its more useful features include intelligent code completion, great UI editor support for a multitude of plugins and not to mention amazing debugging capabilities and version control integration</string>
     <string name="devblog_article_sqlite">An open source database library which provides a standalone database for embedded projects (such as Android apps). A bit of a pain to work it in the beginning on Android, but once the user gets the hang of it, it almost became second nature. Great simple database implementation that is also light on resources</string>
@@ -92,12 +99,35 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="link_android_developers">https://developer.android.com/index.html</string>
+    <string name="link_google_developers">https://developers.google.com/identity/</string>
+    <string name="link_android_hive">http://www.androidhive.info/</string>
     <string name="link_stack_overflow">http://stackoverflow.com/questions/tagged/android</string>
     <string name="link_android_studio">https://developer.android.com/studio/index.html</string>
     <string name="link_sqlite">https://sqlite.org/</string>
     <string name="link_git">https://git-scm.com/</string>
     <string name="link_github">https://github.com/about</string>
     <string name="link_icons8">https://icons8.com</string>
+
+    <string name="btnSwitchViewTimeline">View Timeline</string>
+    <string name="btnSwitchViewResources">View Development Resources</string>
+
+
+    <!--TimeLine Strings (Titles)-->
+    <string name="timeline_title_week1">Week One (Working On The Database)</string>
+    <string name="timeline_title_week2">Week Two (Sitting on my hands &#8230; sort of)</string>
+    <string name="timeline_title_week3">Week Three (Coming Together Nicely)</string>
+    <string name="timeline_title_week4">Week Four (Crunch Time Approaching)</string>
+    <string name="timeline_title_week5">Week Five (2nd Most Productive Week)</string>
+    <string name="timeline_title_week6">Week Six (Final Touch Ups and TimeLine)</string>
+
+    <!--TimeLine Strings (Articles)-->
+    <string name="timeline_article_week1">The database, (probably the most tedious job and definitely the most underestimated) took two days alone to take care of, and even then was only about 75% done, All i had really done was take care of the contract class (which would prove to be invaluable) and create the data model and eventual database</string>
+    <string name="timeline_article_week2">A Common occurrence this semester, but honestly this time it was more due to trying to focus on exams and get them out of the way, at least this time wasn\'t wasted as I took some time to draw out how my layouts would look and function on paper.</string>
+    <string name="timeline_article_week3">This was the week where a lot of the work was coming together nicely. It was by far the slowest week as it was filled with steep learning curves and speedhumps, but this week proved to be the must productive despite it not reflecting visually on the application, yet</string>
+    <string name="timeline_article_week4">As the presentation date approaches I realised I might not complete the project to the degree I wold have liked. Working through the night, I strongly considered taking the 2nd opportunity exam opportunity, and at 04:00am my brain made the decision for me. It just died. No Development Blog in Sight</string>
+    <string name="timeline_article_week5">This week was filled the creation of the Development blog, minor touch ups to UI elements and database interactions and fixing of a few minor bugs, The decision to hold of presentation seemed like a good one at this point</string>
+    <string name="timeline_article_week6">Finally the Timeline was being done (Left it till late because it would document my progress, duh) and I hae to say Im proud of what I have created. Not the most groundbreaking design but it has all I need to get a decent mark</string>
+
 
 
 </resources>

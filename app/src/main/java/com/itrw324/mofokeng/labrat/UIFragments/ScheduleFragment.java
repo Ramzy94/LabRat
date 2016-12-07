@@ -13,6 +13,7 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itrw324.mofokeng.labrat.NonActivityClasses.CalenderHandler;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.Class;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.DatabaseHandler;
 import com.itrw324.mofokeng.labrat.NonActivityClasses.LabRatConstants;
@@ -70,6 +71,17 @@ public class ScheduleFragment extends Fragment {
                 handler.deleteSchedule(theSchedule);
                 Toast.makeText(getActivity(), R.string.class_removed, Toast.LENGTH_SHORT).show();
                 updateUI();
+            }
+        });
+
+        card.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                CalenderHandler calHandler = new CalenderHandler();
+                //calHandler.addClassToCalendar(uniClass);
+                startActivity(calHandler.addClassToCalendar(uniClass));
+                return true;
             }
         });
         return card;

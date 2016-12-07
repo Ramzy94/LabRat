@@ -6,14 +6,34 @@
     android:orientation="vertical"
     tools:context="com.itrw324.mofokeng.labrat.UIFragments.DevBlogFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:id="@+id/btnDevSwitch"
+            android:layout_height="wrap_content"
+            android:text="@string/btnSwitchViewTimeline"
+            tools:background="@color/colorAccent"
+            android:textColor="@color/starWhite"/>
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/scrollViewLayout"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/blogLayout">
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
             <android.support.v7.widget.CardView
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/card_android_dev"
@@ -22,6 +42,7 @@
                 android:background="@color/colorPrimaryDark">
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:layout_height="match_parent">
                     <LinearLayout
@@ -33,7 +54,7 @@
                         <ImageView
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            app:srcCompat="@drawable/abdroid_developers" />
+                            app:srcCompat="@drawable/android_developers" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_weight="4"
@@ -64,6 +85,113 @@
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
+
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_google_dev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/google_developers" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_google_dvelopers">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_google_developers"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_google_developers"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_android_hive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/androidhive" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:background="@color/starWhite"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/color_android_hive">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/devblog_title_android_hive"
+                                android:textStyle="bold"
+                                android:textColor="@color/starWhite"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/starWhite"
+                                android:text="@string/devblog_article_android_hive"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
             <android.support.v7.widget.CardView
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/card_stack_overflow"
@@ -73,6 +201,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:baselineAligned="false"
                     android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_weight="1"
@@ -123,6 +252,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:baselineAligned="false"
                     android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_weight="1"
@@ -173,6 +303,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:baselineAligned="false"
                     android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_weight="1"
@@ -273,6 +404,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:baselineAligned="false"
                     android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_weight="1"
@@ -323,6 +455,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:baselineAligned="false"
                     android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_weight="1"

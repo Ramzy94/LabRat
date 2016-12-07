@@ -86,9 +86,6 @@ public class ClassFragment extends Fragment {
         return builder.create();
     }
 
-    private final int EDIT_DIALOG = 0;
-    private final int ADD_DIALOG = 1;
-
     private void updateUI()
     {
         linearLayout.removeAllViews();
@@ -101,7 +98,7 @@ public class ClassFragment extends Fragment {
             linearLayout.addView(createCardView(campusClass,getActivity().getLayoutInflater()));
 
             Space nothing = new Space(getActivity());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 5);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 15);
             nothing.setLayoutParams(params);
             linearLayout.addView(nothing);
             linearLayout.refreshDrawableState();

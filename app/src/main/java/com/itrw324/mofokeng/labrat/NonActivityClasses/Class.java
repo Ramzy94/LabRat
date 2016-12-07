@@ -66,6 +66,25 @@ public class Class {
         }
     }
 
+    private String getClass_End_Time() {
+
+        switch (getClass_Period())
+        {
+            case 0:
+                return "09:20";
+            case 1:
+                return "10:50";
+            case 2:
+                return "12:20";
+            case 3:
+                return "13:50";
+            case 4:
+                return "15:20";
+            default:
+                return "16:50";
+        }
+    }
+
     public int getClass_Period() {
         return class_Period;
     }
@@ -100,6 +119,18 @@ public class Class {
         else if (getDay().equalsIgnoreCase("Thursday"))
             return Calendar.THURSDAY;
         else return Calendar.FRIDAY;
+    }
+
+    int[] getStartHourMins() {
+        String[] stringTime = getClass_Time().split(":");
+        int time[] = {Integer.parseInt(stringTime[0]), Integer.parseInt(stringTime[1])};
+        return time;
+    }
+
+    int[] getEndHourMins() {
+        String[] stringTime = getClass_End_Time().split(":");
+        int time[] = {Integer.parseInt(stringTime[0]), Integer.parseInt(stringTime[1])};
+        return time;
     }
 
     public String getVenueID() {

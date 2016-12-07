@@ -78,7 +78,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return c.getString(0);
     }
 
-    public String getVenueName(int venueID)
+    private String getVenueName(int venueID)
     {
         String sql = "SELECT * FROM "+ Database.TableVenue.TABLE_NAME + " WHERE "+Database.TableVenue.COLOUMN_VENUEID+" = ?";
 
@@ -92,7 +92,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return c.getString(1);
     }
 
-    public Venue[] getVenueArray()
+    private Venue[] getVenueArray()
     {
         String sql = "SELECT * FROM "+ Database.TableVenue.TABLE_NAME + ";";
 
@@ -366,6 +366,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return results;
     }
 
+    public boolean venueHasClass(String venue)
+    {
+        ArrayList<Class> classes = getClassesInVenue(venue);
+
+        Calendar cal = Calendar.getInstance();
+
+        int hours = cal.get(Calendar.HOUR_OF_DAY);
+        int minutes = cal.get(Calendar.MINUTE);
+
+        for(Class aClass:classes) {
+            if((aClass.getStartHourMins()[0]<=hours) && (aClass.getStartHourMins()[1]<=minutes) ){
+                return ((aClass.getEndHourMins()[0]>hours) && (aClass.getEndHourMins()[1]>minutes));
+            }
+        }
+        return false;
+    }
+
     public UserAccount getUser(GoogleSignInAccount account)
     {
         database = this.getReadableDatabase();
@@ -400,7 +417,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return c.getString(0).equalsIgnoreCase(email);
-
     }
 
     @Override
